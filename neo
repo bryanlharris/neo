@@ -1,0 +1,380 @@
+#!/usr/bin/perl -w
+
+use strict;
+use WWW::Mechanize;
+use Getopt::Lucid qw( :all );
+use File::Temp;
+use Expect;
+
+sub mkpass {
+    my $com = q/apg -n 1 -m 10 -x 10 -a 1 -E IilL10oO,.\'\"-_\!\`\;:\|\{\}\[]\(\)\<\>\\%\$?\&\^\@ -l/;
+    exec $com;
+}
+
+sub neo_help {
+my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
+,NAME
+,       neo - small neospire helper utility
+,
+,SYNOPSIS
+,       neo [OPTION]... [QUERY]
+,
+,DESCRIPTION
+,       A small utility I would like for help with the ticketing system.  Hopef-
+,       ully it will make lots of tasks much quicker which would otherwise requ-
+,       ire me to switch windows, copy/paste random info, look for certain text
+,       which is in a hard-to-read location, and basically waste time.
+,
+,       Arguments can be like "--arg=[OPTION]" or like "arg [OPTION]". [QUERY]
+,       can be any regular expression compatible with the linux grep program on
+,       pinky.
+,
+,       This is made on cygwin so I don't have any idea if it will work on regu-
+,       lar linux.  One thing you will surely have to do is install the modules.
+,
+,       help, -h, --help
+,           Print the help message
+,
+,       mkpass
+,           Create a random password.  Requires the ``apg'' package.
+,
+,       ls, --ls
+,           List the tickets in the unassigned queue.  This option is not fully
+,           functional right now.  It lists the ticket numbers only but will ev-
+,           entually list the partial company and partial summary.
+,
+,       search [QUERY], --search=[QUERY]
+,           Search the passwords file on pinky for [QUERY], which is a regular
+,           expression.  Right now this only searches the nix-passwords file,
+,           but later it might be able to search the other ones as well.
+,
+,       i, -i
+,           This makes the search case-insensitive.  E.g.,
+,             neo -i search penton
+,             neo -i search PENTON
+,             neo -i search pEnToN
+,
+,       [ssh|rdp] [QUERY], --login=[QUERY]
+,           Login to a server matching the regexp returned by [QUERY] as run fr-
+,           om pinky's grep on the nix-passwords file.  In other words, your qu-
+,           ery should only return one line of results.  The best and most comm-
+,           on way to do this is to use the IP address of the machine for the
+,           [QUERY].  To prevent multiple matches, a space character is appended
+,           to the [QUERY] string.
+,
+,       pix [IP], --pix=[IP]
+,           Login to the pix device at [IP].  This works in almost all cases
+,           now.
+,
+,
+,EXAMPLES
+,       Here are some examples of how to use this program.
+,
+,       To search for the ns1 server and subsequently login to it.
+,
+,           $ neo search ns1
+,           NeoSpire cns1.neospire.net 66.111.111.3 6Zax5M2?NB xx root
+,           NeoSpire ns1.neospire.net 66.111.111.5 N+uR/hv4ph xx root
+,           NeoSpire rns1-1.neospire.net 64.74.122.162 qFajx^YqK= xx root
+,           NeoSpire rns1-2.neospire.net 64.74.122.163 eBnQ77~#m~ xx root
+,           $ neo ssh 66.111.111.5
+,           (...some expect output scrolls by, and then you are logged in...)
+,           ns1# 
+,
+,       To search using a regular expression pattern instead of just a string of
+,       text.
+,
+,           $ neo search \ ns1[.]neospire[.]net
+,           NeoSpire ns1.neospire.net 66.111.111.5 N+uR/hv4ph xx root
+,
+,           $ neo search ^NeoSpire.*lvs[12]
+,           NeoSpire lvs1.neospire.net 66.111.111.61 B8**ep7?yH xx root
+,           NeoSpire lvs2.neospire.net 66.111.111.62 /kE@PH&@d^ xx root
+,
+,       If you know your regexp pattern will only match a single server, you can
+,       probably get by with using it to login instead of having to search.
+,
+,           $ neo login \ ns1\.neospire\.net
+,           (...some expect output scrolls by...)
+,           ns1#
+,
+,       To login to a pix.
+,
+,           $ neo pix 10.2.136.1
+,           spawn ssh pix@10.2.136.1
+,           pix@10.2.136.1's password:
+,           Type help or '?' for a list of available commands.
+,           fw1> en
+,           Password: **********
+,           fw1# (Now you are logged in)
+,
+,
+,THE END
+,
+        FINIS
+
+    open LESS, "|less";
+    print LESS " $_\n" foreach (@quote);
+    close LESS;
+}
+
+1;
+#!/usr/bin/perl -w
+
+sub neo_ticket_login {
+    my ($user, $pass) = ("bharris", '***REMOVED***');
+    my $browser = WWW::Mechanize->new();
+    $browser->get('https://cas.corp.neospire.net:8443/login');
+    die "Could not get page\n" unless $browser->success;
+    $browser->set_fields(username=>$user, password=>$pass);
+    $browser->submit;
+    die "Could not submit to login page\n" unless $browser->success;
+    return $browser;
+}
+
+sub neo_ticket_ls {
+    my $browser = shift;
+    $browser->get("https://gravity.corp.neospire.net/tickets.myTickets?");
+    die "Could not get page\n" unless $browser->success;
+    my @content = split '\n', $browser->content;
+
+    my @tickets = grep /tickets.*viewTicket.*ticketNum=\d{6}/, @content;
+    s/.*(\d{6}).*/$1/g foreach @tickets;
+
+    my @customers = grep /customers.viewCustomer.customerId.*>(.*)<\/a>/, @content;
+    s/.*>\d{4} - (.*)<\/a>/$1/g foreach @customers;
+
+    for (my $i=0; $i<@tickets; $i++) {
+        print "$tickets[$i]\t$customers[$i]\n";
+    }
+}
+
+1;
+#!/usr/bin/perl -w
+
+sub save_local_cache {
+    my @passwords = `ssh pinky sudo cat a/{mds,nix,win,domain-trust,netdev}-passwords`;
+    open PASSWORDS, ">/home/bharris/passwords";
+    print PASSWORDS $_ foreach (@passwords);
+    close PASSWORDS;
+    chmod 0600, "/home/bharris/passwords";
+}
+
+sub search {
+    my ($query) = @_;
+    &save_local_cache unless -e "/home/bharris/passwords";
+    open PASSWORDS, "/home/bharris/passwords";
+    my @info = grep /$query/, <PASSWORDS>;
+    close PASSWORDS;
+
+    print "-" x 80 . "\n";
+    /^(.*?) +(.*?) +(.*?) +(.*?) +(.*?) +(.*?)$/ and
+        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n", $1,$2,$3,$4,$6
+        foreach (@info);
+    print "-" x 80 . "\n";
+}
+
+sub isearch {
+    my ($query) = @_;
+    &save_local_cache unless -e "/home/bharris/passwords";
+    open PASSWORDS, "/home/bharris/passwords";
+    # $query =~ s/(.*)[^\.]*(.*)/$1\.*$2/;
+    my @info = grep /$query/i, <PASSWORDS>;
+    close PASSWORDS;
+
+    print "-" x 80 . "\n";
+    /^(.*?) +(.*?) +(.*?) +(.*?) +(.*?) +(.*?)$/ and
+        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n", $1,$2,$3,$4,$6
+        foreach (@info);
+    print "-" x 80 . "\n";
+}
+
+
+sub get_info {
+    my ($query) = @_;
+    my @results = `neo search $query`;
+    my $line;
+    /\b$query\b/ and $line = $_ and last foreach (@results);
+    my ($computername,$ip,$password) = (split / +/, $line)[1,2,3];
+    $ip = $1 if $ip =~
+        /((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))/;
+    return ($computername,$ip,$password);
+}
+
+1;
+#!/usr/bin/perl -w
+
+sub ssh_login {
+    my ($computername,$ip,$password) = @_;
+
+    my @quote = <<'        FINIS' =~ /\s*(.*)/g;
+        #!/usr/bin/expect -f
+        set timeout -1
+        spawn ssh -R 1729:localhost:1729 -Y -l root -o StrictHostKeyChecking=no _IP_
+        match_max 100000
+        expect -re "assword"
+        send -- "_PASSWORD_\r"
+        interact
+        exit
+        FINIS
+
+    s/_IP_/$ip/g foreach (@quote);
+    $password =~ s/\$/\\\$/g;
+    s/_PASSWORD_/$password/g foreach (@quote);
+
+    my ($filehandle,$filename) = File::Temp::tempfile();
+    print $filehandle "$_\n" foreach (@quote);
+    system("/usr/bin/expect -f $filename");
+}
+
+1;
+#!/usr/bin/perl -w
+
+sub pix_login {
+    my ($debug,$ip) = @_;
+
+    if ($debug == 0) {
+        chomp(my @lines = grep /NEW0/, `neo debug pix $ip`);
+        s/NEW0 // and s/\015//g foreach @lines;
+        my ($password,$enable) = @lines;
+        my $stars = "*" x length $enable;
+        my @quote = <<'            FINIS' =~ /\s*(.*)/g;;
+            #!/usr/bin/expect -f
+
+            set timeout -1
+            spawn ssh -o StrictHostKeyChecking=no pix@_IP_
+            match_max 100000
+            expect -exact "pix@_IP_'s password: "
+            send -- "_PASSWORD_\r"
+            expect -exact "\r
+            Type help or '?' for a list of available commands.\r"
+            expect -exact "> "
+            send -- "en\r"
+            expect -exact "en\r
+            Password: "
+            send -- "_ENABLE_"
+            expect -exact "_STARS_"
+            send -- "\r"
+            expect -exact "\r"
+            expect -exact "# "
+            interact
+            FINIS
+
+        s/_IP_/$ip/g foreach (@quote);
+        s/_PASSWORD_/$password/g foreach (@quote);
+        s/_ENABLE_/$enable/g foreach (@quote);
+        s/_STARS_/$stars/ foreach (@quote);
+
+        my ($filehandle,$filename) = File::Temp::tempfile();
+        print $filehandle "$_\n" foreach (@quote);
+        system("/usr/bin/expect -f $filename");
+
+    } elsif ($debug == 1) {
+        my $exp = new Expect;
+        $exp->spawn("ssh", ("pinky")) or die "Cannot spawn ssh: $!\n";
+        $exp->expect(1,
+            [ '[(]yes[/]no[)][?]' => sub {  my $exp = shift;
+                                            $exp->send("yes\n");
+                                            &exp_continue; } ],
+            [ '[@]pinky[:][~][$] ' => sub { &exp_continue; } ],
+            );
+        $exp->send("sudo su -\n");
+        $exp->expect(0, 'pinky# ');
+        $exp->send("cd /no*\n");
+        $exp->send("grep -h \'NEW\' pixpass\n");
+        $exp->expect(0, 'pinky# ');
+        $exp->send("logout\n");
+        $exp->expect(0, 'pinky:~$ ');
+        $exp->send("logout\n");
+        $exp->expect(0, 'eof');
+        $exp->soft_close();
+    }
+}
+
+1;
+#!/usr/bin/perl -w
+
+sub rdp_login {
+    my ($computername,$ip,$password) = @_;
+    $computername = $1 if $computername =~ /.*?\.(.*?)/;
+    my $rdpass = `rdpass.exe \"$password\"`;
+
+    my @quote = <<'        FINIS' =~ /\s*(.*)/g;
+        screen mode id:i:1
+        desktopwidth:i:1024
+        desktopheight:i:768
+        session bpp:i:16
+        winposstr:s:0,1,51,21,1339,1072
+        full address:s:_IP_
+        compression:i:0
+        keyboardhook:i:2
+        audiomode:i:0
+        redirectdrives:i:0
+        redirectprinters:i:0
+        redirectcomports:i:0
+        redirectsmartcards:i:1
+        displayconnectionbar:i:1
+        autoreconnection enabled:i:1
+        alternate shell:s:
+        shell working directory:s:
+        disable wallpaper:i:1
+        disable full window drag:i:0
+        disable menu anims:i:1
+        disable themes:i:1
+        disable cursor setting:i:0
+        bitmapcachepersistenable:i:1
+        authentication level:i:0
+        enablecredsspsupport:i:0
+        username:s:sqltest
+        domain:s:_COMPUTERNAME_
+        password 51:b:_RDPASS_
+        FINIS
+
+        s/_IP_/$ip/g foreach (@quote);
+        s/_RDPASS_/$rdpass/g foreach (@quote);
+        s/_COMPUTERNAME_/$computername/g foreach (@quote);
+
+        my ($filehandle,$filename) = File::Temp::tempfile(SUFFIX => '.rdp');
+        print $filehandle "$_\n" foreach (@quote);
+        close $filehandle;
+        my $basename = $filename;
+        $basename =~ s|/tmp/||g;
+        system("mstsc c:\\\\cygwin\\\\tmp\\\\$basename");
+        unlink "/tmp/$basename";
+}
+
+1;
+#!/usr/bin/perl -w
+
+my @specs = (
+    Param("search"),
+    Param("ssh"),
+    Param("pix"),
+    Param("rdp"),
+    Switch("ls"),
+    Switch("i"),
+    Switch("mkpass"),
+    Switch("help|h")->anycase(),
+    Switch("debug")->default(0),
+);
+
+my $options = Getopt::Lucid->getopt( \@specs );
+
+my $debug   = $options->get_debug;
+my $query   = $options->get_search;
+my $ssh_ip  = $options->get_ssh;
+my $pix_ip  = $options->get_pix;
+my $rdp_ip  = $options->get_rdp;
+
+&neo_help                               if $options->get_help;
+&neo_ticket_ls(&neo_ticket_login)       if $options->get_ls;
+&isearch($query)                        if $options->get_search and not
+                                           $options->get_i;
+&isearch($query)                        if $options->get_search and
+                                           $options->get_i;
+&ssh_login(&get_info($ssh_ip))          if $options->get_ssh;
+&pix_login($debug,$pix_ip)              if $options->get_pix;
+&rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
+&mkpass                                 if $options->get_mkpass;
+
+1;
