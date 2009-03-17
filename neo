@@ -20,17 +20,14 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,       neo [OPTION]... [QUERY]
 ,
 ,DESCRIPTION
-,       A small utility I would like for help with the ticketing system.  Hopef-
-,       ully it will make lots of tasks much quicker which would otherwise requ-
-,       ire me to switch windows, copy/paste random info, look for certain text
-,       which is in a hard-to-read location, and basically waste time.
+,       A small utility.  Hopefully it will make lots of tasks easier.
 ,
 ,       Arguments can be like "--arg=[OPTION]" or like "arg [OPTION]". [QUERY]
 ,       can be any regular expression compatible with the linux grep program on
 ,       pinky.
 ,
-,       This is made on cygwin so I don't have any idea if it will work on regu-
-,       lar linux.  One thing you will surely have to do is install the modules.
+,       To use this, you will surely have to install the necessary modules.
+,       E.g. perl -MCPAN -eshell and then install <module>[enter] at the prompt.
 ,
 ,       help, -h, --help
 ,           Print the help message
