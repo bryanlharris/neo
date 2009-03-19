@@ -207,7 +207,7 @@ sub ssh_login {
     my @quote = <<'        FINIS' =~ /\s*(.*)/g;
         #!/usr/bin/expect -f
         set timeout -1
-        spawn ssh -R 1729:localhost:1729 -Y -l root -o StrictHostKeyChecking=no _IP_
+        spawn ssh -p 22 -R 1729:localhost:1729 -Y -l root -o StrictHostKeyChecking=no _IP_
         match_max 100000
         expect -re "assword"
         send -- "_PASSWORD_\r"
@@ -239,7 +239,7 @@ sub pix_login {
             #!/usr/bin/expect -f
 
             set timeout -1
-            spawn ssh -o StrictHostKeyChecking=no pix@_IP_
+            spawn ssh -p 22 -o StrictHostKeyChecking=no pix@_IP_
             match_max 100000
             expect -exact "pix@_IP_'s password: "
             send -- "_PASSWORD_\r"
