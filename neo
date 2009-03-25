@@ -115,9 +115,6 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
     close LESS;
 }
 
-1;
-#!/usr/bin/perl -w
-
 sub neo_ticket_login {
     my ($user, $pass) = ("bharris", '***REMOVED***');
     my $browser = WWW::Mechanize->new();
@@ -145,9 +142,6 @@ sub neo_ticket_ls {
         print "$tickets[$i]\t$customers[$i]\n";
     }
 }
-
-1;
-#!/usr/bin/perl -w
 
 sub save_local_cache {
     my @passwords = `ssh pinky sudo cat a/{mds,nix,win,domain-trust,netdev}-passwords`;
@@ -198,9 +192,6 @@ sub get_info {
     return ($computername,$ip,$password);
 }
 
-1;
-#!/usr/bin/perl -w
-
 sub ssh_login {
     my ($computername,$ip,$password) = @_;
 
@@ -223,9 +214,6 @@ sub ssh_login {
     print $filehandle "$_\n" foreach (@quote);
     system("/usr/bin/expect -f $filename");
 }
-
-1;
-#!/usr/bin/perl -w
 
 sub pix_login {
     my ($debug,$ip) = @_;
@@ -288,9 +276,6 @@ sub pix_login {
     }
 }
 
-1;
-#!/usr/bin/perl -w
-
 sub rdp_login {
     my ($computername,$ip,$password) = @_;
     $computername = $1 if $computername =~ /.*?\.(.*?)/;
@@ -340,9 +325,6 @@ sub rdp_login {
         unlink "/tmp/$basename";
 }
 
-1;
-#!/usr/bin/perl -w
-
 my @specs = (
     Param("search"),
     Param("ssh"),
@@ -374,4 +356,3 @@ my $rdp_ip  = $options->get_rdp;
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
 &mkpass                                 if $options->get_mkpass;
 
-1;
