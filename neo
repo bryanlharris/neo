@@ -151,20 +151,6 @@ sub save_local_cache {
     chmod 0600, "/home/bharris/passwords";
 }
 
-sub search {
-    my ($query) = @_;
-    &save_local_cache unless -e "/home/bharris/passwords";
-    open PASSWORDS, "/home/bharris/passwords";
-    my @info = grep /$query/, <PASSWORDS>;
-    close PASSWORDS;
-
-    print "-" x 80 . "\n";
-    /^(.*?) +(.*?) +(.*?) +(.*?) +(.*?) +(.*?)$/ and
-        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n", $1,$2,$3,$4,$6
-        foreach (@info);
-    print "-" x 80 . "\n";
-}
-
 sub isearch {
     my ($query) = @_;
     &save_local_cache unless -e "/home/bharris/passwords";
@@ -331,7 +317,6 @@ my @specs = (
     Param("pix"),
     Param("rdp"),
     Switch("ls"),
-    Switch("i"),
     Switch("mkpass"),
     Switch("help|h")->anycase(),
     Switch("debug")->default(0),
@@ -347,10 +332,7 @@ my $rdp_ip  = $options->get_rdp;
 
 &neo_help                               if $options->get_help;
 &neo_ticket_ls(&neo_ticket_login)       if $options->get_ls;
-&isearch($query)                        if $options->get_search and not
-                                           $options->get_i;
-&isearch($query)                        if $options->get_search and
-                                           $options->get_i;
+&isearch($query)                        if $options->get_search;
 &ssh_login(&get_info($ssh_ip))          if $options->get_ssh;
 &pix_login($debug,$pix_ip)              if $options->get_pix;
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
