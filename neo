@@ -34,11 +34,6 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,       mkpass
 ,           Create a random password.  Requires the ``apg'' package.
 ,
-,       ls, --ls
-,           List the tickets in the unassigned queue.  This option is not fully
-,           functional right now.  It lists the ticket numbers only but will ev-
-,           entually list the partial company and partial summary.
-,
 ,       search [QUERY], --search=[QUERY]
 ,           Search the passwords file on pinky for [QUERY], which is a regular
 ,           expression.  Right now this only searches the nix-passwords file,
@@ -112,34 +107,6 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
     open LESS, "|less";
     print LESS " $_\n" foreach (@quote);
     close LESS;
-}
-
-sub neo_ticket_login {
-    my ($user, $pass) = ("bharris", '***REMOVED***');
-    my $browser = WWW::Mechanize->new();
-    $browser->get('https://cas.corp.neospire.net:8443/login');
-    die "Could not get page\n" unless $browser->success;
-    $browser->set_fields(username=>$user, password=>$pass);
-    $browser->submit;
-    die "Could not submit to login page\n" unless $browser->success;
-    return $browser;
-}
-
-sub neo_ticket_ls {
-    my $browser = shift;
-    $browser->get("https://gravity.corp.neospire.net/tickets.myTickets?");
-    die "Could not get page\n" unless $browser->success;
-    my @content = split '\n', $browser->content;
-
-    my @tickets = grep /tickets.*viewTicket.*ticketNum=\d{6}/, @content;
-    s/.*(\d{6}).*/$1/g foreach @tickets;
-
-    my @customers = grep /customers.viewCustomer.customerId.*>(.*)<\/a>/, @content;
-    s/.*>\d{4} - (.*)<\/a>/$1/g foreach @customers;
-
-    for (my $i=0; $i<@tickets; $i++) {
-        print "$tickets[$i]\t$customers[$i]\n";
-    }
 }
 
 sub save_local_cache {
@@ -330,7 +297,6 @@ my $pix_ip  = $options->get_pix;
 my $rdp_ip  = $options->get_rdp;
 
 &neo_help                               if $options->get_help;
-&neo_ticket_ls(&neo_ticket_login)       if $options->get_ls;
 &isearch($query)                        if $options->get_search;
 &ssh_login(&get_info($ssh_ip))          if $options->get_ssh;
 &pix_login($debug,$pix_ip)              if $options->get_pix;
