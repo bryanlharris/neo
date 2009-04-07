@@ -264,50 +264,7 @@ sub pix_login {
 sub rdp_login {
     my ($computername,$ip,$password) = @_;
     $computername = $1 if $computername =~ /.*?\.(.*?)/;
-    my $rdpass = `rdpass.exe \"$password\"`;
 
-    my @quote = <<'        FINIS' =~ /\s*(.*)/g;
-        screen mode id:i:1
-        desktopwidth:i:1024
-        desktopheight:i:768
-        session bpp:i:16
-        winposstr:s:0,1,51,21,1339,1072
-        full address:s:_IP_
-        compression:i:0
-        keyboardhook:i:2
-        audiomode:i:0
-        redirectdrives:i:0
-        redirectprinters:i:0
-        redirectcomports:i:0
-        redirectsmartcards:i:1
-        displayconnectionbar:i:1
-        autoreconnection enabled:i:1
-        alternate shell:s:
-        shell working directory:s:
-        disable wallpaper:i:1
-        disable full window drag:i:0
-        disable menu anims:i:1
-        disable themes:i:1
-        disable cursor setting:i:0
-        bitmapcachepersistenable:i:1
-        authentication level:i:0
-        enablecredsspsupport:i:0
-        username:s:sqltest
-        domain:s:_COMPUTERNAME_
-        password 51:b:_RDPASS_
-        FINIS
-
-        s/_IP_/$ip/g foreach (@quote);
-        s/_RDPASS_/$rdpass/g foreach (@quote);
-        s/_COMPUTERNAME_/$computername/g foreach (@quote);
-
-        open TMP, ">/tmp/neo";
-        print TMP "$_\n" foreach (@quote);
-        system("/usr/bin/expect -f /tmp/neo");
-        my $basename = "/tmp/neo";
-        $basename =~ s|/tmp/||g;
-        system("mstsc c:\\\\cygwin\\\\tmp\\\\$basename");
-        unlink "/tmp/$basename";
 }
 
 my @specs = (
