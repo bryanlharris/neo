@@ -3,7 +3,6 @@
 use strict;
 use WWW::Mechanize;
 use Getopt::Lucid qw( :all );
-#use File::Temp;
 use Expect;
 
 sub mkpass {
