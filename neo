@@ -3,7 +3,7 @@
 use strict;
 use WWW::Mechanize;
 use Getopt::Lucid qw( :all );
-use File::Temp;
+#use File::Temp;
 use Expect;
 
 sub mkpass {
@@ -196,9 +196,9 @@ sub ssh_login {
     $password =~ s/\$/\\\$/g;
     s/_PASSWORD_/$password/g foreach (@quote);
 
-    my ($filehandle,$filename) = File::Temp::tempfile();
-    print $filehandle "$_\n" foreach (@quote);
-    system("/usr/bin/expect -f $filename");
+    open TMP, ">/tmp/neo";
+    print TMP "$_\n" foreach (@quote);
+    system("/usr/bin/expect -f /tmp/neo");
 }
 
 sub pix_login {
@@ -236,9 +236,9 @@ sub pix_login {
         s/_ENABLE_/$enable/g foreach (@quote);
         s/_STARS_/$stars/ foreach (@quote);
 
-        my ($filehandle,$filename) = File::Temp::tempfile();
-        print $filehandle "$_\n" foreach (@quote);
-        system("/usr/bin/expect -f $filename");
+        open TMP, ">/tmp/neo";
+        print TMP "$_\n" foreach (@quote);
+        system("/usr/bin/expect -f /tmp/neo");
 
     } elsif ($debug == 1) {
         my $exp = new Expect;
@@ -302,10 +302,10 @@ sub rdp_login {
         s/_RDPASS_/$rdpass/g foreach (@quote);
         s/_COMPUTERNAME_/$computername/g foreach (@quote);
 
-        my ($filehandle,$filename) = File::Temp::tempfile(SUFFIX => '.rdp');
-        print $filehandle "$_\n" foreach (@quote);
-        close $filehandle;
-        my $basename = $filename;
+        open TMP, ">/tmp/neo";
+        print TMP "$_\n" foreach (@quote);
+        system("/usr/bin/expect -f /tmp/neo");
+        my $basename = "/tmp/neo";
         $basename =~ s|/tmp/||g;
         system("mstsc c:\\\\cygwin\\\\tmp\\\\$basename");
         unlink "/tmp/$basename";
