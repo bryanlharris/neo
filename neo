@@ -264,7 +264,7 @@ sub pix_login {
 sub rdp_login {
     my ($computername,$ip,$password) = @_;
     $computername = $1 if $computername =~ /.*?\.(.*?)/;
-
+    system("echo '$password' | rdesktop -u sqltest -p - $ip");
 }
 
 my @specs = (
