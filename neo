@@ -147,10 +147,22 @@ sub get_info {
 sub ssh_login {
     my ($computername,$ip,$password) = @_;
 
+    my @boul = qw/
+        66.111.96.222
+        66.111.96.224
+        66.111.96.225
+        66.111.96.223
+        66.111.96.221
+        66.111.96.226
+        66.111.96.227
+        66.111.96.228
+        66.111.96.229
+        /;
+
     my @quote = <<'        FINIS' =~ /\s*(.*)/g;
         #!/usr/bin/expect -f
         set timeout -1
-        spawn ssh -p 22 -R 1729:localhost:1729 -Y -l root -o StrictHostKeyChecking=no _IP_
+        spawn ssh -p _PORT_ -R 1729:localhost:1729 -Y -l root -o StrictHostKeyChecking=no _IP_
         match_max 100000
         expect -re "assword"
         send -- "_PASSWORD_\r"
@@ -158,6 +170,11 @@ sub ssh_login {
         exit
         FINIS
 
+    if ( grep { $_ eq $ip } @boul ) {
+        s/_PORT_/1022/g foreach (@quote);
+    } else {
+        s/_PORT_/22/g foreach (@quote);
+    }
     s/_IP_/$ip/g foreach (@quote);
     $password =~ s/\$/\\\$/g;
     s/_PASSWORD_/$password/g foreach (@quote);
