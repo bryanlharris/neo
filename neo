@@ -170,11 +170,8 @@ sub ssh_login {
         exit
         FINIS
 
-    if ( grep { $_ eq $ip } @boul ) {
-        s/_PORT_/1022/g foreach (@quote);
-    } else {
-        s/_PORT_/22/g foreach (@quote);
-    }
+    grep { $_ eq $ip } @boul and s/_PORT_/1022/g foreach (@quote);
+    grep { $_ eq $ip } @boul or s/_PORT_/22/g foreach (@quote);
     s/_IP_/$ip/g foreach (@quote);
     $password =~ s/\$/\\\$/g;
     s/_PASSWORD_/$password/g foreach (@quote);
