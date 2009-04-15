@@ -235,7 +235,15 @@ sub pix_login {
 sub rdp_login {
     my ($computername,$ip,$password) = @_;
     $computername = $1 if $computername =~ /.*?\.(.*?)/;
-    system("echo '$password' | rdesktop -a 16 -g 1024x768 -u sqltest -p - $ip &");
+
+    my @isn = qw/
+        10.2.38.
+        /;
+
+    my $user = "sqltest";
+    grep { $ip =~ /$_/ } @isn and $user = "ISN-PUBLIC\\\\sqltest";
+    grep { $ip =~ /$_/ } @isn and $password = 's8Nu7g!pLb';
+    system("echo '$password' | rdesktop -a 16 -g 1024x768 -u $user -p - $ip &");
 }
 
 my @specs = (
