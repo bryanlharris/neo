@@ -165,9 +165,9 @@ sub ssh_login {
         match_max 100000
         expect -re "assword"
         send -- "_PASSWORD_\r"
-        set CTRLZ \032
+        set CTRLX \030
         interact {
-            -reset $CTRLZ {exec kill -STOP [pid]}
+            -reset $CTRLX {exec kill -STOP [pid]}
         }
         exit
         FINIS
