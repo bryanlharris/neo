@@ -198,7 +198,10 @@ sub pix_login {
             send -- "\r"
             expect -exact "\r"
             expect -exact "# "
-            interact
+            set CTRLX \030
+            interact {
+                -reset $CTRLX {exec kill -STOP [pid]}
+            }
             FINIS
 
         s/_IP_/$ip/g foreach (@quote);
