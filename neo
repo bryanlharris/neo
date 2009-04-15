@@ -18,13 +18,8 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,       neo [OPTION]... [QUERY]
 ,
 ,DESCRIPTION
-,       A small utility.  Hopefully it will make lots of tasks easier.
 ,
-,       Arguments can be like "--arg=[OPTION]" or like "arg [OPTION]". [QUERY]
-,       can be any regular expression compatible with the linux grep program on
-,       pinky.
-,
-,       To use this, you will surely have to install the necessary modules.
+,       To use this, you will have to install the necessary modules.
 ,       E.g. perl -MCPAN -eshell and then install <module>[enter] at the prompt.
 ,
 ,       help, -h, --help
@@ -35,27 +30,12 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,
 ,       search [QUERY], --search=[QUERY]
 ,           Search the passwords file on pinky for [QUERY], which is a regular
-,           expression.  Right now this only searches the nix-passwords file,
-,           but later it might be able to search the other ones as well.
+,           expression.  All searches are case insensitive.
+,           Files searched: {mds,nix,win,domain-trust,netdev}-passwords
 ,
-,       i, -i
-,           This makes the search case-insensitive.  E.g.,
-,             neo -i search penton
-,             neo -i search PENTON
-,             neo -i search pEnToN
-,
-,       [ssh|rdp] [QUERY], --login=[QUERY]
-,           Login to a server matching the regexp returned by [QUERY] as run fr-
-,           om pinky's grep on the nix-passwords file.  In other words, your qu-
-,           ery should only return one line of results.  The best and most comm-
-,           on way to do this is to use the IP address of the machine for the
-,           [QUERY].  To prevent multiple matches, a space character is appended
-,           to the [QUERY] string.
-,
-,       pix [IP], --pix=[IP]
-,           Login to the pix device at [IP].  This works in almost all cases
-,           now.
-,
+,       [ssh|rdp|pix] [IP], --login=[IP]
+,           Login to a device at [IP].  To prevent multiple matches, a space
+,           character is appended to the [IP] string.
 ,
 ,EXAMPLES
 ,       Here are some examples of how to use this program.
