@@ -171,6 +171,11 @@ sub ssh_login {
         match_max 100000
         expect -re "assword"
         send -- "_PASSWORD_\r"
+        expect -re "# "
+        send -- "exec bash\r"
+        expect -re "# "
+        send -- "export PS1='\\n\[\$USER\@\$HOSTNAME:\$PWD\]\\n# '\r"
+        expect -re "# "
         set CTRLX \030
         interact {
             -reset $CTRLX {exec kill -STOP [pid]}
