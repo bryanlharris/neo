@@ -131,7 +131,7 @@ sub get_info {
 }
 
 sub ssh_login {
-    my ($computername,$ip,$password) = @_;
+    my ($computername,$ip,$password,$screen) = @_;
 
     my @boul = qw/
         66.111.96.222
@@ -148,7 +148,7 @@ sub ssh_login {
     my @quote = <<'        FINIS' =~ /\s*(.*)/g;
         #!/usr/bin/expect -f
         set timeout -1
-        spawn ssh -t -p _PORT_ -Y -l root -o StrictHostKeyChecking=no _IP_ screen
+        spawn ssh -t -p _PORT_ -Y -l root -o StrictHostKeyChecking=no _IP__SCREEN_
         match_max 100000
         expect -re "assword"
         send -- "_PASSWORD_\r"
@@ -159,6 +159,8 @@ sub ssh_login {
         exit
         FINIS
 
+    $screen == 1 and s/_SCREEN_/ screen/g foreach (@quote);
+    $screen != 1 and s/_SCREEN_//g foreach (@quote);
     grep { $_ eq $ip } @boul and s/_PORT_/1022/g foreach (@quote);
     grep { $_ eq $ip } @boul or s/_PORT_/22/g foreach (@quote);
     s/_IP_/$ip/g foreach (@quote);
@@ -253,6 +255,7 @@ my @specs = (
     Param("ssh"),
     Param("pix"),
     Param("rdp"),
+    Switch("screen"),
     Switch("showpasswords"),
     Switch("mkpass"),
     Switch("help|h")->anycase(),
@@ -266,11 +269,12 @@ my $query           = $options->get_search;
 my $ssh_ip          = $options->get_ssh;
 my $pix_ip          = $options->get_pix;
 my $rdp_ip          = $options->get_rdp;
+my $screen          = $options->get_screen;
 my $show_passwords  = $options->get_showpasswords;
 
 &neo_help                               if $options->get_help;
 &search($query,$show_passwords)         if $options->get_search;
-&ssh_login(&get_info($ssh_ip))          if $options->get_ssh;
+&ssh_login(&get_info($ssh_ip),$screen)  if $options->get_ssh;
 &pix_login($debug,$pix_ip)              if $options->get_pix;
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
 &mkpass                                 if $options->get_mkpass;
