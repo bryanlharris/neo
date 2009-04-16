@@ -105,7 +105,7 @@ sub save_local_cache {
 }
 
 sub search {
-    my ($query) = @_;
+    my ($query,$show_passwords) = @_;
     &save_local_cache unless -e "$ENV{HOME}/passwords";
     open PASSWORDS, "$ENV{HOME}/passwords";
     # $query =~ s/(.*)[^\.]*(.*)/$1\.*$2/;
@@ -114,15 +114,14 @@ sub search {
 
     print "-" x 80 . "\n";
     /^(.*?) +(.*?) +(.*?) +(.*?) +(.*?) +(.*?)$/ and
-        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n", $1,$2,$3,$4,$6
+        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n", $1,$2,$3,$show_passwords?$4:"############",$6
         foreach (@info);
     print "-" x 80 . "\n";
 }
 
-
 sub get_info {
     my ($query) = @_;
-    my @results = `neo search $query`;
+    my @results = `neo --showpasswords search $query`;
     my $line;
     /\b$query\b/ and $line = $_ and last foreach (@results);
     my ($computername,$ip,$password) = (split / +/, $line)[1,2,3];
@@ -254,7 +253,7 @@ my @specs = (
     Param("ssh"),
     Param("pix"),
     Param("rdp"),
-    Switch("ls"),
+    Switch("showpasswords"),
     Switch("mkpass"),
     Switch("help|h")->anycase(),
     Switch("debug")->default(0),
@@ -262,14 +261,15 @@ my @specs = (
 
 my $options = Getopt::Lucid->getopt( \@specs );
 
-my $debug   = $options->get_debug;
-my $query   = $options->get_search;
-my $ssh_ip  = $options->get_ssh;
-my $pix_ip  = $options->get_pix;
-my $rdp_ip  = $options->get_rdp;
+my $debug           = $options->get_debug;
+my $query           = $options->get_search;
+my $ssh_ip          = $options->get_ssh;
+my $pix_ip          = $options->get_pix;
+my $rdp_ip          = $options->get_rdp;
+my $show_passwords  = $options->get_showpasswords;
 
 &neo_help                               if $options->get_help;
-&search($query)                         if $options->get_search;
+&search($query,$show_passwords)         if $options->get_search;
 &ssh_login(&get_info($ssh_ip))          if $options->get_ssh;
 &pix_login($debug,$pix_ip)              if $options->get_pix;
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
