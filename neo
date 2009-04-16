@@ -171,7 +171,7 @@ sub ssh_login {
         match_max 100000
         expect -re "assword"
         send -- "_PASSWORD_\r"
-        expect -re "# "
+        expect -re "(#.* )|(Press Space or Return to end)"
         send -- "exec bash\r"
         expect -re "# "
         send -- "export PS1='\\n\[\$USER\@\$HOSTNAME:\$PWD\]\\n# '\r"
