@@ -104,7 +104,7 @@ sub save_local_cache {
     chmod 0600, "$ENV{HOME}/passwords";
 }
 
-sub isearch {
+sub search {
     my ($query) = @_;
     &save_local_cache unless -e "$ENV{HOME}/passwords";
     open PASSWORDS, "$ENV{HOME}/passwords";
@@ -269,7 +269,7 @@ my $pix_ip  = $options->get_pix;
 my $rdp_ip  = $options->get_rdp;
 
 &neo_help                               if $options->get_help;
-&isearch($query)                        if $options->get_search;
+&search($query)                         if $options->get_search;
 &ssh_login(&get_info($ssh_ip))          if $options->get_ssh;
 &pix_login($debug,$pix_ip)              if $options->get_pix;
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
