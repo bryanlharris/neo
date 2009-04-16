@@ -12,11 +12,11 @@ sub mkpass {
 sub neo_help {
 my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,NAME
-,       neo - small neospire helper utility
+,       neo - NeoSpire utility to search the pinky file and login to computers
 ,
 ,SYNOPSIS
-,       neo [OPTION]... [QUERY]
-,       neo [OPTION]... [IP]
+,       neo [ modifiers ] [ options ] [ regular expression ]
+,       neo [ modifiers ] [ options ] [ IP address ]
 ,
 ,DESCRIPTION
 ,
@@ -39,6 +39,15 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,       [ssh|rdp|pix] [IP], --login=[IP]
 ,           Login to a device at [IP].  To prevent multiple matches, a space
 ,           character is appended to the [IP] string.
+,
+,MODIFIERS
+,
+,       screen, --screen
+,           Valid for ssh login.  Run screen inside remote ssh session.
+,
+,       showpasswords, --showpasswords
+,           Valid for searches.  Show passwords for search results.  If you don't
+,           this, you will only see pound signs in the password field.
 ,
 ,EXAMPLES
 ,
@@ -87,6 +96,11 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,
 ,           $ neo rdp 4.2.2.2
 ,           (A remote desktop window pops up)
+,
+,NOTES/CAVEATS
+,
+,       * During either a pix or an ssh session, you can type ctrl-x ctrl-z to put
+,         the remote session into the background.
 ,
 ,THE END
         FINIS
