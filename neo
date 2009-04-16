@@ -267,10 +267,16 @@ sub rdp_login {
     my @isn = qw/
         10.2.38.
         /;
+    my @informed = qw/
+        10.2.18.
+        10.2.37.
+        /;
 
     my $user = "sqltest";
     grep { $ip =~ /$_/ } @isn and $user = "ISN-PUBLIC\\\\sqltest";
     grep { $ip =~ /$_/ } @isn and $password = 's8Nu7g!pLb';
+    grep { $ip =~ /$_/ } @informed and $user = "IDC\\\\sqltest";
+    grep { $ip =~ /$_/} @informed and $password = 'h8G9r72w$';
     system("echo '$password' | rdesktop -a 16 -g 1024x768 -u $user -p - $ip &");
 }
 
