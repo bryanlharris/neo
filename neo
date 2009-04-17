@@ -111,7 +111,7 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 }
 
 sub save_local_cache {
-    my @passwords = `ssh pinky sudo cat a/{mds,nix,win,domain-trust,netdev}-passwords`;
+    my @passwords = `ssh pinky sudo cat a/{pix,mds,nix,win,domain-trust,netdev}-passwords`;
     open PASSWORDS, ">$ENV{HOME}/passwords";
     print PASSWORDS $_ foreach (@passwords);
     close PASSWORDS;
@@ -124,6 +124,11 @@ sub search {
     open PASSWORDS, "$ENV{HOME}/passwords";
     my @info = grep /$query/i, <PASSWORDS>;
     close PASSWORDS;
+
+    if ($show_passwords and $query =~ /new0/i) {
+        /^(new0) +(.*?)$/i and printf "%s\n", $2 foreach (@info);
+        exit 0;
+    }
 
     print "-" x 80 . "\n";
     /^(.*?) +(.*?) +(.*?) +(.*?) +(.*?) +(.*?)$/ and
