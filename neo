@@ -2,7 +2,6 @@
 
 use strict;
 use Getopt::Lucid qw( :all );
-use Expect;
 
 sub mkpass {
     my $com = q/apg -n 1 -m 10 -x 10 -a 1 -E IilL10oO,.\'\"-_\!\`\;:\|\{\}\[]\(\)\<\>\\%\$?\&\^\@ -l/;
@@ -201,67 +200,45 @@ sub ssh_login {
 }
 
 sub pix_login {
-    my ($debug,$ip) = @_;
+    my ($ip) = @_;
 
-    if ($debug == 0) {
-        chomp(my @lines = grep /NEW0/, `neo debug pix $ip`);
-        s/NEW0 // and s/\015//g foreach @lines;
-        my ($password,$enable) = @lines;
-        my $stars = "*" x length $enable;
-        my @quote = <<'            FINIS' =~ /\s*(.*)/g;;
-            #!/usr/bin/expect -f
+    chomp(my @lines = `neo showpasswords search new0`);
+    s/\015//g foreach @lines;
+    my ($password,$enable) = @lines;
+    my $stars = "*" x length $enable;
+    my @quote = <<'        FINIS' =~ /\s*(.*)/g;;
+        #!/usr/bin/expect -f
 
-            set timeout -1
-            spawn ssh -p 22 -o StrictHostKeyChecking=no pix@_IP_
-            match_max 100000
-            expect -exact "pix@_IP_'s password: "
-            send -- "_PASSWORD_\r"
-            expect -exact "\r
-            Type help or '?' for a list of available commands.\r"
-            expect -exact "> "
-            send -- "en\r"
-            expect -exact "en\r
-            Password: "
-            send -- "_ENABLE_"
-            expect -exact "_STARS_"
-            send -- "\r"
-            expect -exact "\r"
-            expect -exact "# "
-            set CTRLX \030
-            interact {
-                -reset $CTRLX {exec kill -STOP [pid]}
-            }
-            FINIS
+        set timeout -1
+        spawn ssh -p 22 -o StrictHostKeyChecking=no pix@_IP_
+        match_max 100000
+        expect -exact "pix@_IP_'s password: "
+        send -- "_PASSWORD_\r"
+        expect -exact "\r
+        Type help or '?' for a list of available commands.\r"
+        expect -exact "> "
+        send -- "en\r"
+        expect -exact "en\r
+        Password: "
+        send -- "_ENABLE_"
+        expect -exact "_STARS_"
+        send -- "\r"
+        expect -exact "\r"
+        expect -exact "# "
+        set CTRLX \030
+        interact {
+            -reset $CTRLX {exec kill -STOP [pid]}
+        }
+        FINIS
 
-        s/_IP_/$ip/g foreach (@quote);
-        s/_PASSWORD_/$password/g foreach (@quote);
-        s/_ENABLE_/$enable/g foreach (@quote);
-        s/_STARS_/$stars/ foreach (@quote);
+    s/_IP_/$ip/g foreach (@quote);
+    s/_PASSWORD_/$password/g foreach (@quote);
+    s/_ENABLE_/$enable/g foreach (@quote);
+    s/_STARS_/$stars/ foreach (@quote);
 
-        open TMP, ">/tmp/neo";
-        print TMP "$_\n" foreach (@quote);
-        system("/usr/bin/expect -f /tmp/neo");
-
-    } elsif ($debug == 1) {
-        my $exp = new Expect;
-        $exp->spawn("ssh", ("pinky")) or die "Cannot spawn ssh: $!\n";
-        $exp->expect(1,
-            [ '[(]yes[/]no[)][?]' => sub {  my $exp = shift;
-                                            $exp->send("yes\n");
-                                            &exp_continue; } ],
-            [ '[@]pinky[:][~][$] ' => sub { &exp_continue; } ],
-            );
-        $exp->send("sudo su -\n");
-        $exp->expect(0, 'pinky# ');
-        $exp->send("cd /no*\n");
-        $exp->send("grep -h \'NEW\' pixpass\n");
-        $exp->expect(0, 'pinky# ');
-        $exp->send("logout\n");
-        $exp->expect(0, 'pinky:~$ ');
-        $exp->send("logout\n");
-        $exp->expect(0, 'eof');
-        $exp->soft_close();
-    }
+    open TMP, ">/tmp/neo";
+    print TMP "$_\n" foreach (@quote);
+    system("/usr/bin/expect -f /tmp/neo");
 }
 
 sub rdp_login {
@@ -293,12 +270,10 @@ my @specs = (
     Switch("showpasswords"),
     Switch("mkpass"),
     Switch("help|h")->anycase(),
-    Switch("debug")->default(0),
 );
 
 my $options = Getopt::Lucid->getopt( \@specs );
 
-my $debug           = $options->get_debug;
 my $query           = $options->get_search;
 my $ssh_ip          = $options->get_ssh;
 my $pix_ip          = $options->get_pix;
@@ -309,7 +284,7 @@ my $show_passwords  = $options->get_showpasswords;
 &neo_help                               if $options->get_help;
 &search($query,$show_passwords)         if $options->get_search;
 &ssh_login(&get_info($ssh_ip),$screen)  if $options->get_ssh;
-&pix_login($debug,$pix_ip)              if $options->get_pix;
+&pix_login($pix_ip)                     if $options->get_pix;
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
 &mkpass                                 if $options->get_mkpass;
 
