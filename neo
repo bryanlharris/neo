@@ -151,7 +151,7 @@ sub get_info {
 sub ssh_login {
     my ($computername,$ip,$password,$screen) = @_;
 
-    my @boul = qw/
+    my @boulevards = qw/
         66.111.96.222
         66.111.96.224
         66.111.96.225
@@ -184,8 +184,8 @@ sub ssh_login {
 
     $screen == 1 and s/_SCREEN_/ screen/g foreach (@quote);
     $screen != 1 and s/_SCREEN_//g foreach (@quote);
-    grep { $ip =~ /$_/ } @boul and s/_PORT_/1022/g foreach (@quote);
-    grep { $ip =~ /$_/ } @boul or s/_PORT_/22/g foreach (@quote);
+    grep { $ip =~ /$_/ } @boulevards and s/_PORT_/1022/g foreach (@quote);
+    grep { $ip =~ /$_/ } @boulevards or s/_PORT_/22/g foreach (@quote);
     s/_IP_/$ip/g foreach (@quote);
     $password =~ s/\$/\\\$/g;
     s/_PASSWORD_/$password/g foreach (@quote);
