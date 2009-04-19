@@ -3,112 +3,6 @@
 use strict;
 use Getopt::Lucid qw( :all );
 
-sub mkpass {
-    my $com = q/apg -n 1 -m 10 -x 10 -a 1 -E IilL10oO,.\'\"-_\!\`\;:\|\{\}\[]\(\)\<\>\\%\$?\&\^\@ -l/;
-    exec $com;
-}
-
-sub neo_help {
-my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
-,NAME
-,       neo - NeoSpire utility to search the pinky file and login to computers
-,
-,SYNOPSIS
-,       neo [ modifiers ] [ options ] [ regular expression ]
-,       neo [ modifiers ] [ options ] [ IP address ]
-,
-,DESCRIPTION
-,
-,       To use this, you will have to install the necessary modules.
-,       E.g. perl -MCPAN -eshell and then install <module>[enter] at the prompt.
-,
-,OPTIONS
-,
-,       help, -h, --help
-,           Print the help message
-,
-,       mkpass, --mkpass
-,           Create a random password.  Requires the ``apg'' package.
-,
-,       search [QUERY], --search=[QUERY]
-,           Search the passwords file on pinky for [QUERY], which is a regular
-,           expression.  All searches are case insensitive.
-,           Files searched: {mds,nix,win,domain-trust,netdev}-passwords
-,
-,       [ssh|rdp|pix] [IP], --login=[IP]
-,           Login to a device at [IP].  To prevent multiple matches, a space
-,           character is appended to the [IP] string.
-,
-,MODIFIERS
-,
-,       screen, --screen
-,           Valid for ssh login.  Run screen inside remote ssh session.
-,
-,       showpasswords, --showpasswords
-,           Valid for searches.  Show passwords for search results.  If you don't
-,           this, you will only see pound signs in the password field.
-,
-,EXAMPLES
-,
-,       To search for the ns1 server and subsequently login to it.
-,
-,           $ neo search ns1
-,           NeoSpire cns1.neospire.net 66.111.111.3 ###### xx root
-,           NeoSpire ns1.neospire.net 66.111.111.5 ###### xx root
-,           NeoSpire rns1-1.neospire.net 64.74.122.162 ###### xx root
-,           NeoSpire rns1-2.neospire.net 64.74.122.163 ###### xx root
-,           $ neo ssh 66.111.111.5
-,           spawn ssh -p 22 -Y -l root -o StrictHostKeyChecking=no 66.111.111.5
-,           Password: 
-,           Last login: Thu Apr  9 06:29:55 2009 from xob.neospire.net
-,           Linux ns1.neospire.net 2.6.10-fai-p3 #1 SMP Thu Jan 20 10:24:53 CST 2005 i686 GNU/Linux
-,
-,           The programs included with the Debian GNU/Linux system are free software;
-,           the exact distribution terms for each program are described in the
-,           individual files in /usr/share/doc/*/copyright.
-, 
-,           Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
-,           permitted by applicable law.
-,           ns1# 
-,
-,       To search using a regular expression pattern instead of just a string of
-,       text.
-,
-,           $ neo search \ ns1[.]neospire[.]net
-,           NeoSpire ns1.neospire.net 66.111.111.5 N+uR/hv4ph xx root
-,
-,           $ neo search ^NeoSpire.*lvs[12]
-,           NeoSpire lvs1.neospire.net 66.111.111.61 B8**ep7?yH xx root
-,           NeoSpire lvs2.neospire.net 66.111.111.62 /kE@PH&@d^ xx root
-,
-,       To login to a pix.
-,
-,           $ neo pix 10.2.136.1
-,           spawn ssh pix@10.2.136.1
-,           pix@10.2.136.1's password:
-,           Type help or '?' for a list of available commands.
-,           fw1> en
-,           Password: **********
-,           fw1# (Now you are logged in)
-,
-,       To RDP to a server.
-,
-,           $ neo rdp 4.2.2.2
-,           (A remote desktop window pops up)
-,
-,NOTES/CAVEATS
-,
-,       * During either a pix or an ssh session, you can type ctrl-x ctrl-z to put
-,         the remote session into the background.
-,
-,THE END
-        FINIS
-
-    open LESS, "|less";
-    print LESS " $_\n" foreach (@quote);
-    close LESS;
-}
-
 sub save_local_cache {
     my @passwords = `ssh pinky sudo cat a/{pix,mds,nix,win,domain-trust,netdev}-passwords`;
     open PASSWORDS, ">$ENV{HOME}/passwords";
@@ -143,7 +37,7 @@ sub search {
 
 sub get_info {
     my ($query) = @_;
-    my @results = `neo --showpasswords search $query`;
+    my @results = `neo.pl --showpasswords search $query`;
     my $line;
     /\b$query\b/ and $line = $_ and last foreach (@results);
     my ($computername,$ip,$password) = (split / +/, $line)[1,2,3];
@@ -202,7 +96,7 @@ sub ssh_login {
 sub pix_login {
     my ($ip) = @_;
 
-    chomp(my @lines = `neo showpasswords search new0`);
+    chomp(my @lines = `neo.pl showpasswords search new0`);
     s/\015//g foreach @lines;
     my ($password,$enable) = @lines;
     my $stars = "*" x length $enable;
@@ -255,9 +149,9 @@ sub rdp_login {
 
     my $user = "sqltest";
     grep { $ip =~ /$_/ } @isn and $user = "ISN-PUBLIC\\\\sqltest";
-    grep { $ip =~ /$_/ } @isn and $password = 's8Nu7g!pLb';
+    grep { $ip =~ /$_/ } @isn and $password = `neo.pl showpasswords search isn.*dc1 | grep -v ^- | awk '{print \$4}'`;
     grep { $ip =~ /$_/ } @informed and $user = "IDC\\\\sqltest";
-    grep { $ip =~ /$_/} @informed and $password = 'h8G9r72w$';
+    grep { $ip =~ /$_/} @informed and $password = `neo.pl showpasswords search informed.*dc1\\  | grep -v ^- | awk '{print \$4}'`;
     system("echo '$password' | rdesktop -a 16 -g 1024x768 -u $user -p - $ip &");
 }
 
@@ -281,7 +175,6 @@ my $rdp_ip          = $options->get_rdp;
 my $screen          = $options->get_screen;
 my $show_passwords  = $options->get_showpasswords;
 
-&neo_help                               if $options->get_help;
 &search($query,$show_passwords)         if $options->get_search;
 &ssh_login(&get_info($ssh_ip),$screen)  if $options->get_ssh;
 &pix_login($pix_ip)                     if $options->get_pix;
