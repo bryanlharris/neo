@@ -13,7 +13,7 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,DESCRIPTION
 ,
 ,       To use this, you will have to install the necessary modules.
-,       E.g. perl -MCPAN -eshell and then install <module>[enter] at the prompt.
+,       E.g. perl -MCPAN -eshell and then ``install Getopt::Lucid'' at the prompt.
 ,
 ,OPTIONS
 ,
