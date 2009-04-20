@@ -71,7 +71,7 @@ sub ssh_login {
         expect -re "(#.* )|(Press Space or Return to end)"
         send -- "exec bash\r"
         expect -re "# "
-        send -- "export PS1='\\n\[\$USER\@\$HOSTNAME:\$PWD\]\\n# '\r"
+        send -- "export PS1='\\n\[\$USER\@\$(echo \$HOSTNAME | cut -d. -f1):\$PWD\]\\n# '\r"
         expect -re "# "
         set CTRLX \030
         interact {
