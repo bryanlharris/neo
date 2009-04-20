@@ -9,8 +9,8 @@ all: $(PROG) $(LINKS)
 
 install: $(PROG) $(SCRIPTS)
 	install $(PROG) $(SCRIPTS) /usr/local/bin && \
-		( cd /usr/local/bin && ln -s neo neo-help && \
-		ln -s neo neo-usage && ln -s neo neo-mkpass )
+		( cd /usr/local/bin && ln -f -s neo neo-help && \
+		ln -f -s neo neo-usage && ln -f -s neo neo-mkpass )
 
 uninstall:
 	rm -fv /usr/local/bin/{neo,neo-help,neo-usage,neo-mkpass,neo.pl,neo-help.pl}
