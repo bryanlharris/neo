@@ -24,13 +24,13 @@ usage.o: usage.h
 neo.o: usage.h
 
 neo-help:
-	ln -s neo neo-help
+	ln -f -s neo neo-help
 
 neo-usage:
-	ln -s neo neo-usage
+	ln -f -s neo neo-usage
 
 neo-mkpass:
-	ln -s neo neo-mkpass
+	ln -f -s neo neo-mkpass
 
 clean:
 	rm -f *.o $(PROG) && find . -type l -maxdepth 1 -exec rm -rf {} \;
