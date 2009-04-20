@@ -64,7 +64,7 @@ sub ssh_login {
     my @quote = <<'        FINIS' =~ /\s*(.*)/g;
         #!/usr/bin/expect -f
         set timeout -1
-        spawn ssh -t -p _PORT_ -Y -l root -o StrictHostKeyChecking=no _IP__SCREEN_
+        spawn ssh -k -t -p _PORT_ -Y -l root -o StrictHostKeyChecking=no _IP__SCREEN_
         match_max 100000
         expect -re "assword"
         send -- "_PASSWORD_\r"
