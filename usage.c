@@ -5,9 +5,6 @@
 #include <stdlib.h>
 #include "usage.h"
 
-#define NEO_VERSION "v0.01"
-#define ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
-
 void die(const char *err, ...)
 {
     va_list params;
