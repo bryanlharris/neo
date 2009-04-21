@@ -8,7 +8,8 @@ PROG=neo
 all: $(PROG) $(LINKS)
 
 install: $(PROG) $(SCRIPTS)
-	install $(PROG) $(SCRIPTS) /usr/local/bin && \
+	install -s $(PROG) /usr/local/bin && \
+		install $(SCRIPTS) /usr/local/bin && \
 		( cd /usr/local/bin && ln -f -s neo neo-help && \
 		ln -f -s neo neo-usage && ln -f -s neo neo-mkpass )
 
