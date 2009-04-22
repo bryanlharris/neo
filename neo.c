@@ -18,7 +18,7 @@ int main(int argc, char **argv, char **envp)
         cmd = slash;
     }
 
-    if (!strncmp(cmd, "neo", 3)) {
+    if (!strncmp(cmd, "neo-", 4)) {
         cmd += 4;
         argv[0] = cmd;
         handle_internal_command(argc, argv, envp);
