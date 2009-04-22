@@ -64,7 +64,7 @@ sub ssh_login {
     my @quote = <<'        FINIS' =~ /\s*(.*)/g;
         #!/usr/bin/expect -f
         set timeout -1
-        spawn ssh -k -t -Y -2 -4 -a -q -x \
+        spawn ssh -k -t -2 -4 -a -q -x \
             -l root \
             -o StrictHostKeyChecking=no \
             -o Compression=no \
