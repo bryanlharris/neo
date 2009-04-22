@@ -25,5 +25,8 @@ int main(int argc, char **argv, char **envp)
         die("cannot handle %s internally", cmd);
     }
 
+    /* Set a default command */
+    cmd = "help";
+
     return 0;
 }
