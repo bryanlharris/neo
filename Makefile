@@ -16,7 +16,8 @@ install: $(PROG) $(SCRIPTS)
 		ln -f -s neo neo-pix )
 
 uninstall:
-	rm -fv /usr/local/bin/{neo,neo-help,neo-usage,neo-mkpass,neo.pl,neo-help.pl}
+	rm -fv /usr/local/bin/{neo,neo.pl,neo-help.pl} && \
+		rm -fv /usr/local/bin/neo-{help,usage,mkpass,search,ssh,pix}
 
 LIBS= -lssl
 
