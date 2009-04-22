@@ -113,8 +113,18 @@ sub pix_login {
         #!/usr/bin/expect -f
 
         set timeout -1
-        spawn ssh -p 22 -o StrictHostKeyChecking=no pix@_IP_
-        match_max 100000
+        spawn ssh -k -t -2 -4 -a -q -x \
+            -p 22 \
+            -l pix \
+            -o StrictHostKeyChecking=no \
+            -o Compression=no \
+            -o CheckHostIP=no \
+            -o PasswordAuthentication=yes \
+            -o PubkeyAuthentication=no \
+            -o RhostsRSAAuthentication=no \
+            -o RSAAuthentication=no \
+            _IP_
+       match_max 100000
         expect -exact "pix@_IP_'s password: "
         send -- "_PASSWORD_\r"
         expect -exact "\r
