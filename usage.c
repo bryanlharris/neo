@@ -66,7 +66,7 @@ int cmd_ssh(int argc, char **argv, char **envp)
 
 int cmd_pix(int argc, char **argv, char **envp)
 {
-    execlp("neo.pl", "neo.pl", "pix", argv[2], NULL);
+    execlp("neo.pl", "neo.pl", argv[0], argv[1], NULL);
     return 0;
 }
 
@@ -78,7 +78,7 @@ int cmd_rdp(int argc, char **argv, char **envp)
 
 int cmd_search(int argc, char **argv, char **envp)
 {
-    execlp("neo.pl", "neo.pl", "search", argv[2], NULL);
+    execlp("neo.pl", "neo.pl", argv[0], argv[1], NULL);
     return 0;
 }
 
