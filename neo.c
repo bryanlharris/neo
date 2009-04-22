@@ -45,5 +45,7 @@ int main(int argc, char **argv, char **envp)
         cmd_usage(0, NULL, NULL);
     }
 
+    handle_internal_command(argc, argv, envp);
+
     return 0;
 }
