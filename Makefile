@@ -18,11 +18,13 @@ uninstall:
 
 LIBS= -lssl
 
-neo: usage.o neo.o
-	$(CC) $(CFLAGS) -o neo usage.o neo.o $(LIBS)
+neo: usage.o search.o ssh.o neo.o
+	$(CC) $(CFLAGS) -o neo usage.o search.o ssh.o neo.o $(LIBS)
 
 usage.o: usage.h
 neo.o: usage.h
+search.o: usage.h
+ssh.o: usage.h
 
 neo-help:
 	ln -f -s neo neo-help

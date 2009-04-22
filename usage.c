@@ -58,12 +58,6 @@ void handle_internal_command(int argc, char **argv, char **envp)
     exit(cmd_usage(argc, argv, envp));
 }
 
-int cmd_ssh(int argc, char **argv, char **envp)
-{
-    execlp("neo.pl", "neo.pl", "ssh", argv[2], NULL);
-    return 0;
-}
-
 int cmd_pix(int argc, char **argv, char **envp)
 {
     execlp("neo.pl", "neo.pl", argv[0], argv[1], NULL);
@@ -71,12 +65,6 @@ int cmd_pix(int argc, char **argv, char **envp)
 }
 
 int cmd_rdp(int argc, char **argv, char **envp)
-{
-    execlp("neo.pl", "neo.pl", "rdp", argv[2], NULL);
-    return 0;
-}
-
-int cmd_search(int argc, char **argv, char **envp)
 {
     execlp("neo.pl", "neo.pl", argv[0], argv[1], NULL);
     return 0;
