@@ -8,12 +8,12 @@ _neo()
 
     case "${prev}" in
         search)
-            search_opts="showpasswords"
+            search_opts="showpasswords --showpasswords"
             COMPREPLY=( $(compgen -W "${search_opts}" -- ${cur}) )
             return 0
             ;;
         ssh)
-            ssh_opts="screen"
+            ssh_opts="screen --screen"
             COMPREPLY=( $(compgen -W "${ssh_opts}" -- ${cur}) )
             return 0
             ;;
