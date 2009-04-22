@@ -28,5 +28,22 @@ int main(int argc, char **argv, char **envp)
     /* Set a default command */
     cmd = "help";
 
+    while (argc > 1) {
+        cmd = *++argv;
+        argc--;
+
+        if (strncmp(cmd, "--", 2))
+            break;
+
+        cmd += 2;
+
+        if (!strcmp(cmd, "help"))
+            break;
+        if (!strcmp(cmd, "version"))
+            break;
+
+        cmd_usage(0, NULL, NULL);
+    }
+
     return 0;
 }
