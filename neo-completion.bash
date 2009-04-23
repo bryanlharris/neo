@@ -8,12 +8,12 @@ _neo()
 
     case "${prev}" in
         search)
-            search_opts="showpasswords --showpasswords"
+            search_opts="showpasswords --showpasswords $(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
             COMPREPLY=( $(compgen -W "${search_opts}" -- ${cur}) )
             return 0
             ;;
         ssh)
-            ssh_opts="screen --screen"
+            ssh_opts="screen --screen $(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
             COMPREPLY=( $(compgen -W "${ssh_opts}" -- ${cur}) )
             return 0
             ;;
