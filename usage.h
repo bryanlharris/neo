@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#define NEO_VERSION "0.02"
+#define NEO_VERSION "0.03"
 #define ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
 
 extern void die(const char *err, ...);
