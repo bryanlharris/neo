@@ -27,6 +27,11 @@ _neo()
             COMPREPLY=( $(compgen -W "${pix_opts}" -- ${cur}) )
             return 0
             ;;
+        --showpasswords)
+            showpasswords_opts="$(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
+            COMPREPLY=( $(compgen -W "${showpasswords_opts}" -- ${cur}) )
+            return 0
+            ;;
         *)
         ;;
     esac
