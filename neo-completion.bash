@@ -4,7 +4,7 @@ _neo()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="help version search rdp ssh pix"
+    opts="help version search rdp ssh pix --help --version"
 
     case "${prev}" in
         search)
