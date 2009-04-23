@@ -17,6 +17,16 @@ _neo()
             COMPREPLY=( $(compgen -W "${ssh_opts}" -- ${cur}) )
             return 0
             ;;
+        rdp)
+            rdp_opts="console --console $(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
+            COMPREPLY=( $(compgen -W "${rdp_opts}" -- ${cur}) )
+            return 0
+            ;;
+        pix)
+            pix_opts="$(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
+            COMPREPLY=( $(compgen -W "${pix_opts}" -- ${cur}) )
+            return 0
+            ;;
         *)
         ;;
     esac
