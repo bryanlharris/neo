@@ -5,7 +5,7 @@ use Getopt::Lucid qw( :all );
 
 sub get_info {
     my ($query) = @_;
-    my @results = `neo.pl --showpasswords search $query`;
+    my @results = `search.pl 192 $query`;
     my $line;
     /\b$query\b/ and $line = $_ and last foreach (@results);
     my ($computername,$ip,$password) = (split / +/, $line)[1,2,3];
