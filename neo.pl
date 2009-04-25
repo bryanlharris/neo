@@ -73,7 +73,7 @@ sub ssh_login {
 sub pix_login {
     my ($ip) = @_;
 
-    chomp(my @lines = `neo.pl showpasswords search new0`);
+    chomp(my @lines = `neo-search.pl 192 new0`);
     s/\015//g foreach @lines;
     my ($password,$enable) = @lines;
     my $stars = "*" x length $enable;
