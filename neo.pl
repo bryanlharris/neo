@@ -70,58 +70,6 @@ sub ssh_login {
     system("/usr/bin/expect -f /tmp/neo");
 }
 
-sub pix_login {
-    my ($ip) = @_;
-
-    chomp(my @lines = `neo-search.pl 192 new0`);
-    s/\015//g foreach @lines;
-    my ($password,$enable) = @lines;
-    my $stars = "*" x length $enable;
-    my @quote = <<'        FINIS' =~ /\s*(.*)/g;;
-        #!/usr/bin/expect -f
-
-        set timeout -1
-        spawn ssh -k -t -2 -4 -a -q -x \
-            -p 22 \
-            -l pix \
-            -o StrictHostKeyChecking=no \
-            -o Compression=no \
-            -o CheckHostIP=no \
-            -o PasswordAuthentication=yes \
-            -o PubkeyAuthentication=no \
-            -o RhostsRSAAuthentication=no \
-            -o RSAAuthentication=no \
-            _IP_
-       match_max 100000
-        expect -exact "pix@_IP_'s password: "
-        send -- "_PASSWORD_\r"
-        expect -exact "\r
-        Type help or '?' for a list of available commands.\r"
-        expect -exact "> "
-        send -- "en\r"
-        expect -exact "en\r
-        Password: "
-        send -- "_ENABLE_"
-        expect -exact "_STARS_"
-        send -- "\r"
-        expect -exact "\r"
-        expect -exact "# "
-        set CTRLX \030
-        interact {
-            -reset $CTRLX {exec kill -STOP [pid]}
-        }
-        FINIS
-
-    s/_IP_/$ip/g foreach (@quote);
-    s/_PASSWORD_/$password/g foreach (@quote);
-    s/_ENABLE_/$enable/g foreach (@quote);
-    s/_STARS_/$stars/ foreach (@quote);
-
-    open TMP, ">/tmp/neo";
-    print TMP "$_\n" foreach (@quote);
-    system("/usr/bin/expect -f /tmp/neo");
-}
-
 sub rdp_login {
     my ($computername,$ip,$password) = @_;
     $computername = $1 if $computername =~ /.*?\.(.*?)/;
@@ -144,7 +92,6 @@ sub rdp_login {
 
 my @specs = (
     Param("ssh"),
-    Param("pix"),
     Param("rdp"),
     Switch("screen"),
     Switch("mkpass"),
@@ -154,11 +101,9 @@ my @specs = (
 my $options = Getopt::Lucid->getopt( \@specs );
 
 my $ssh_ip          = $options->get_ssh;
-my $pix_ip          = $options->get_pix;
 my $rdp_ip          = $options->get_rdp;
 my $screen          = $options->get_screen;
 
 &ssh_login(&get_info($ssh_ip),$screen)  if $options->get_ssh;
-&pix_login($pix_ip)                     if $options->get_pix;
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
 &mkpass                                 if $options->get_mkpass;
