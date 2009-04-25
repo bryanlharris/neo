@@ -3,70 +3,6 @@
 use strict;
 use Getopt::Lucid qw( :all );
 
-sub save_local_cache {
-    my @passwords = `ssh pinky sudo cat a/{pix,mds,nix,win,domain-trust,netdev}-passwords`;
-    open PASSWORDS, ">$ENV{HOME}/passwords";
-    print PASSWORDS $_ foreach (@passwords);
-    close PASSWORDS;
-    chmod 0600, "$ENV{HOME}/passwords";
-}
-
-sub search {
-    my ($query,$show_passwords) = @_;
-    &save_local_cache unless -e "$ENV{HOME}/passwords";
-    open PASSWORDS, "$ENV{HOME}/passwords";
-    my @info = grep /$query/i, <PASSWORDS>;
-    close PASSWORDS;
-
-    if ($show_passwords and $query =~ /new0/i) {
-        /^(new0) +(.*?)$/i and printf "%s\n", $2 foreach (@info);
-        exit 0;
-    }
-
-    print "-" x 80 . "\n";
-     /^([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?)$/ and
-        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n",
-            $1,
-            $2,
-            $3,
-            $show_passwords ? $4 : "############",
-            $10
-            foreach (@info);
-    /^([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?)$/ and
-        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n",
-            $1,
-            $2,
-            $3,
-            $show_passwords ? $4 : "############",
-            $6
-            foreach (@info);
-    /^([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?)$/ and
-        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n",
-            $1,
-            $2,
-            $3,
-            $show_passwords ? $4 : "############",
-            $6
-            foreach (@info);
-    /^([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?)$/ and
-        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n",
-            $1,
-            $2,
-            $3,
-            $show_passwords ? $4 : "############",
-            $6
-            foreach (@info);
-    /^([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?)$/ and
-        printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n",
-            $1,
-            $2,
-            $3,
-            $show_passwords ? $4 : "############",
-            $5
-            foreach (@info);
-    print "-" x 80 . "\n";
-}
-
 sub get_info {
     my ($query) = @_;
     my @results = `neo.pl --showpasswords search $query`;
@@ -207,28 +143,22 @@ sub rdp_login {
 }
 
 my @specs = (
-    Param("search"),
     Param("ssh"),
     Param("pix"),
     Param("rdp"),
     Switch("screen"),
-    Switch("showpasswords"),
     Switch("mkpass"),
     Switch("help|h")->anycase(),
 );
 
 my $options = Getopt::Lucid->getopt( \@specs );
 
-my $query           = $options->get_search;
 my $ssh_ip          = $options->get_ssh;
 my $pix_ip          = $options->get_pix;
 my $rdp_ip          = $options->get_rdp;
 my $screen          = $options->get_screen;
-my $show_passwords  = $options->get_showpasswords;
 
-&search($query,$show_passwords)         if $options->get_search;
 &ssh_login(&get_info($ssh_ip),$screen)  if $options->get_ssh;
 &pix_login($pix_ip)                     if $options->get_pix;
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
 &mkpass                                 if $options->get_mkpass;
-
