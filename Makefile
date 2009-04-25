@@ -5,7 +5,7 @@ LINKS=neo-help neo-usage neo-mkpass neo-search neo-ssh neo-pix
 SCRIPTS=neo.pl neo-help.pl neo-search.pl
 PROG=neo
 
-all: $(PROG) $(LINKS)
+all: clean $(PROG)
 
 install: $(PROG) $(SCRIPTS)
 	install -s $(PROG) /usr/local/bin && \
