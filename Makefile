@@ -1,7 +1,6 @@
 CFLAGS=-g -O3 -Wall
 CC=gcc
 
-LINKS=neo-help neo-usage neo-mkpass neo-search neo-ssh neo-pix
 SCRIPTS=neo.pl neo-help.pl neo-search.pl
 PROG=neo
 
@@ -29,24 +28,6 @@ usage.o: usage.h
 neo.o: usage.h
 search.o: usage.h
 ssh.o: usage.h
-
-neo-help:
-	ln -f -s neo neo-help
-
-neo-usage:
-	ln -f -s neo neo-usage
-
-neo-mkpass:
-	ln -f -s neo neo-mkpass
-
-neo-search:
-	ln -f -s neo neo-search
-
-neo-ssh:
-	ln -f -s neo neo-ssh
-
-neo-pix:
-	ln -f -s neo neo-pix
 
 clean:
 	rm -f *.o $(PROG) && find . -type l -maxdepth 1 -exec rm -rf {} \;
