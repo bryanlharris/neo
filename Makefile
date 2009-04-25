@@ -2,7 +2,7 @@ CFLAGS=-g -O3 -Wall
 CC=gcc
 
 LINKS=neo-help neo-usage neo-mkpass neo-search neo-ssh neo-pix
-SCRIPTS=neo.pl neo-help.pl search.pl
+SCRIPTS=neo.pl neo-help.pl neo-search.pl
 PROG=neo
 
 all: $(PROG) $(LINKS)
@@ -17,7 +17,7 @@ install: $(PROG) $(SCRIPTS)
 
 uninstall:
 	rm -fv /usr/local/bin/neo && \
-		rm -fv /usr/local/bin/{neo,neo-help,search}.pl && \
+		rm -fv /usr/local/bin/{neo,neo-help,neo-search}.pl && \
 		rm -fv /usr/local/bin/neo-{help,usage,mkpass,search,ssh,pix}
 
 LIBS= -lssl

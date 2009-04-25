@@ -35,8 +35,8 @@ int cmd_search(int argc, char **argv, char **envp)
     }
 
     if (opt.showpasswords)
-        execlp("search.pl", "search.pl", "192", argv[1], NULL);
+        execlp("neo-search.pl", "neo-search.pl", "192", argv[1], NULL);
 
-    execlp("search.pl", "search.pl", "128", argv[1], NULL);
+    execlp("neo-search.pl", "neo-search.pl", "128", argv[1], NULL);
     return 0;
 }
