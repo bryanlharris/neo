@@ -66,7 +66,7 @@ int cmd_pix(int argc, char **argv, char **envp)
 
 int cmd_rdp(int argc, char **argv, char **envp)
 {
-    execlp("neo-rdp.pl", "neo-rdp.pl", argv[0], argv[1], NULL);
+    execlp("neo-rdp.pl", "neo-rdp.pl", argv[1], NULL);
     return 0;
 }
 
