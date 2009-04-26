@@ -8,7 +8,8 @@ all: clean $(PROG)
 
 install: uninstall $(PROG) $(SCRIPTS)
 	install -s $(PROG) /usr/local/bin && \
-		install $(SCRIPTS) /usr/local/bin
+		install $(SCRIPTS) /usr/local/bin && \
+		make clean
 
 uninstall:
 	rm -fv /usr/local/bin/neo && \
