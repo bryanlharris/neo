@@ -99,8 +99,7 @@ int cmd_help(int argc, char **argv, char **envp)
 {
     char *help_cmd = argv[1];
     if (!help_cmd)
-        cmd_usage(argc, argv, envp);
-    execlp("neo-help.pl","neo-help.pl",NULL);
+        execlp("neo-help.pl","neo-help.pl",NULL);
     return 0;
 }
 
