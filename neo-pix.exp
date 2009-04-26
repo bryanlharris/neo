@@ -1,0 +1,46 @@
+#!/usr/bin/expect --
+
+set ipaddr [lindex $argv 0]
+set pass [lindex $argv 1]
+set en [lindex $argv 2]
+
+set pass [exec neo search --showpasswords new0 | head -1]
+set en [exec neo search --showpasswords new0 | tail -1]
+set stars [string length $en]
+
+set IPAddrRe {^(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$}
+if { ! [regexp -- $IPAddrRe $ipaddr] } {
+    puts "This does not look like a valid IP address."
+    exit
+    }
+
+set timeout -1
+spawn ssh -k -t -2 -4 -a -q -x \
+    -p 22 \
+    -l pix \
+    -o StrictHostKeyChecking=no \
+    -o Compression=no \
+    -o CheckHostIP=no \
+    -o PasswordAuthentication=yes \
+    -o PubkeyAuthentication=no \
+    -o RhostsRSAAuthentication=no \
+    -o RSAAuthentication=no \
+    $ipaddr
+match_max 100000
+expect -exact "pix@$ipaddr's password: "
+send -- "$pass\r"
+expect -exact "\r
+Type help or '?' for a list of available commands.\r"
+expect -exact "> "
+send -- "en\r"
+expect -exact "en\r
+Password: "
+send -- "$en"
+expect -exact "$stars"
+send -- "\r"
+expect -exact "\r"
+expect -exact "# "
+set CTRLX \030
+interact {
+    -reset $CTRLX {exec kill -STOP [pid]}
+}

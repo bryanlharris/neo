@@ -1,7 +1,7 @@
 CFLAGS=-g -O3 -Wall
 CC=gcc
 
-SCRIPTS=neo-help.pl neo-search.pl neo-pix.pl neo-ssh.pl neo-rdp.pl
+SCRIPTS=neo-help.pl neo-search.pl neo-pix.exp neo-ssh.pl neo-rdp.pl
 PROG=neo
 
 all: clean $(PROG)

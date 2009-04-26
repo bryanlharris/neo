@@ -60,7 +60,7 @@ void handle_internal_command(int argc, char **argv, char **envp)
 
 int cmd_pix(int argc, char **argv, char **envp)
 {
-    execlp("neo-pix.pl", "neo-pix.pl", argv[0], NULL);
+    execlp("neo-pix.exp", "neo-pix.exp", argv[0], NULL);
     return 0;
 }
 
