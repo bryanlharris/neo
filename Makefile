@@ -9,10 +9,6 @@ all: clean $(PROG)
 install: uninstall $(PROG) $(SCRIPTS)
 	install -s $(PROG) /usr/local/bin && \
 		install $(SCRIPTS) /usr/local/bin && \
-		( cd /usr/local/bin && ln -f -s neo neo-help && \
-		ln -f -s neo neo-usage && ln -f -s neo neo-mkpass && \
-		ln -f -s neo neo-search && ln -f -s neo neo-ssh && \
-		ln -f -s neo neo-pix && ln -f -s neo neo-rdp )
 
 uninstall:
 	rm -fv /usr/local/bin/neo && \
