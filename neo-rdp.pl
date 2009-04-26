@@ -1,7 +1,6 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Getopt::Lucid qw( :all );
 
 sub get_info {
     my ($query) = @_;
@@ -34,12 +33,4 @@ sub rdp_login {
     system("echo '$password' | rdesktop -a 16 -g 1024x768 -u $user -p - $ip &");
 }
 
-my @specs = (
-    Param("rdp"),
-);
-
-my $options = Getopt::Lucid->getopt( \@specs );
-
-my $rdp_ip          = $options->get_rdp;
-
-&rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
+&rdp_login(&get_info($ARGV[0]),1) if $ARGV[0];
