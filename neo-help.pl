@@ -18,6 +18,4 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,       During an ssh session, you can type ctrl-x ctrl-z to put the remote session into the background.
         FINIS
 
-foreach (@quote) {
-    print "$_\n";
-}
+print "$_\n" foreach (@quote);
