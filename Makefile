@@ -8,12 +8,12 @@ all: clean $(PROG)
 
 install: uninstall $(PROG) $(SCRIPTS)
 	install -s $(PROG) /usr/local/bin && \
-		install $(SCRIPTS) /usr/local/bin && \
+		install $(SCRIPTS) /usr/local/bin
 
 uninstall:
 	rm -fv /usr/local/bin/neo && \
 		rm -fv /usr/local/bin/neo{-help,-search,-ssh,-rdp}.pl && \
-		rm -fv /usr/local/bin/neo{-pix}.exp && \
+		rm -fv /usr/local/bin/neo{-pix}.exp
 
 LIBS= -lssl
 
