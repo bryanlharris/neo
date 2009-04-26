@@ -35,8 +35,8 @@ int cmd_ssh(int argc, char **argv, char **envp)
     }
 
     if (opt.screen)
-        execlp("neo.pl", "neo.pl", "screen", argv[0], argv[1], NULL);
+        execlp("neo-ssh.pl", "neo-ssh.pl", "96", argv[1], NULL);
 
-    execlp("neo.pl", "neo.pl", argv[0], argv[1], NULL);
+    execlp("neo-ssh.pl", "neo-ssh.pl", "64", argv[1], NULL);
     return 0;
 }

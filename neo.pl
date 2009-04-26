@@ -14,62 +14,6 @@ sub get_info {
     return ($computername,$ip,$password);
 }
 
-sub ssh_login {
-    my ($computername,$ip,$password,$screen) = @_;
-
-    my @boulevards = qw/
-        66.111.96.222
-        66.111.96.224
-        66.111.96.225
-        66.111.96.223
-        66.111.96.221
-        66.111.96.226
-        66.111.96.227
-        66.111.96.228
-        66.111.96.229
-        /;
-
-    my @quote = <<'        FINIS' =~ /\s*(.*)/g;
-        #!/usr/bin/expect -f
-        set timeout -1
-        spawn ssh -k -t -2 -4 -a -q -x \
-            -l root \
-            -o StrictHostKeyChecking=no \
-            -o Compression=no \
-            -o CheckHostIP=no \
-            -o PasswordAuthentication=yes \
-            -o PubkeyAuthentication=no \
-            -o RhostsRSAAuthentication=no \
-            -o RSAAuthentication=no \
-            -p _PORT_ _IP_ _SCREEN_
-        match_max 100000
-        expect -re "assword"
-        send -- "_PASSWORD_\r"
-        expect -re "(#.* )|(Press Space or Return to end)"
-        send -- "exec bash\r"
-        expect -re "# "
-        send -- "export PS1='\\n\[\$USER\@\$(echo \$HOSTNAME | cut -d. -f1):\$PWD\]\\n# '\r"
-        expect -re "# "
-        set CTRLX \030
-        interact {
-            -reset $CTRLX {exec kill -STOP [pid]}
-        }
-        exit
-        FINIS
-
-    $screen == 1 and s/_SCREEN_/ screen/g foreach (@quote);
-    $screen != 1 and s/_SCREEN_//g foreach (@quote);
-    grep { $ip =~ /$_/ } @boulevards and s/_PORT_/1022/g foreach (@quote);
-    grep { $ip =~ /$_/ } @boulevards or s/_PORT_/22/g foreach (@quote);
-    s/_IP_/$ip/g foreach (@quote);
-    $password =~ s/\$/\\\$/g;
-    s/_PASSWORD_/$password/g foreach (@quote);
-
-    open TMP, ">/tmp/neo";
-    print TMP "$_\n" foreach (@quote);
-    system("/usr/bin/expect -f /tmp/neo");
-}
-
 sub rdp_login {
     my ($computername,$ip,$password) = @_;
     $computername = $1 if $computername =~ /.*?\.(.*?)/;
@@ -91,7 +35,6 @@ sub rdp_login {
 }
 
 my @specs = (
-    Param("ssh"),
     Param("rdp"),
     Switch("screen"),
     Switch("mkpass"),
@@ -100,10 +43,8 @@ my @specs = (
 
 my $options = Getopt::Lucid->getopt( \@specs );
 
-my $ssh_ip          = $options->get_ssh;
 my $rdp_ip          = $options->get_rdp;
 my $screen          = $options->get_screen;
 
-&ssh_login(&get_info($ssh_ip),$screen)  if $options->get_ssh;
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
 &mkpass                                 if $options->get_mkpass;
