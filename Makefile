@@ -1,7 +1,7 @@
 CFLAGS=-g -O3 -Wall
 CC=gcc
 
-SCRIPTS=neo-help.pl neo-search.pl neo-pix.exp neo-ssh.pl neo-rdp.pl
+SCRIPTS=neo-help.pl neo-search.pl neo-pix.exp neo-ssh.exp neo-rdp.pl
 PROG=neo
 
 all: clean $(PROG)
@@ -12,8 +12,8 @@ install: uninstall $(PROG) $(SCRIPTS)
 
 uninstall:
 	rm -fv /usr/local/bin/neo && \
-		rm -fv /usr/local/bin/neo{-help,-search,-ssh,-rdp}.pl && \
-		rm -fv /usr/local/bin/neo{-pix}.exp
+		rm -fv /usr/local/bin/neo{-help,-search,-rdp}.pl && \
+		rm -fv /usr/local/bin/neo{-pix,-ssh}.exp
 
 LIBS= -lssl
 
