@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "usage.h"
+#include "check-ip.h"
 
 void die(const char *err, ...)
 {
@@ -60,13 +61,25 @@ void handle_internal_command(int argc, char **argv, char **envp)
 
 int cmd_pix(int argc, char **argv, char **envp)
 {
-    execlp("neo-pix.exp", "neo-pix.exp", argv[0], NULL);
+    char *ip = argv[1];
+    if (check_ip(ip)) {
+        printf("not a valid ip\n");
+        return 1;
+    }
+
+    execlp("neo-pix.exp", "neo-pix.exp", ip, NULL);
     return 0;
 }
 
 int cmd_rdp(int argc, char **argv, char **envp)
 {
-    execlp("neo-rdp.pl", "neo-rdp.pl", argv[1], NULL);
+    char *ip = argv[1];
+    if (check_ip(ip)) {
+        printf("not a valid ip\n");
+        return 1;
+    }
+
+    execlp("neo-rdp.pl", "neo-rdp.pl", ip, NULL);
     return 0;
 }
 

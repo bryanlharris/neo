@@ -5,12 +5,6 @@ set pass [exec neo search --showpasswords new0 | head -1]
 set en [exec neo search --showpasswords new0 | tail -1]
 set stars [string length $en]
 
-set IPAddrRe {^(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$}
-if { ! [regexp -- $IPAddrRe $ipaddr] } {
-    puts "This does not look like a valid IP address."
-    exit
-    }
-
 set timeout -1
 spawn ssh -k -t -2 -4 -a -q -x \
     -p 22 \

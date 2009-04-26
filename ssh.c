@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "usage.h"
+#include "check-ip.h"
 
 struct ssh_opt {
     unsigned screen:1;
@@ -34,9 +35,13 @@ int cmd_ssh(int argc, char **argv, char **envp)
         *dst++ = arg;
     }
 
-    if (opt.screen)
-        execlp("neo-ssh.pl", "neo-ssh.pl", "96", argv[1], NULL);
+    char *ip = argv[1];
+    if (check_ip(ip)) {
+        printf("not a valid ip.\n");
+        return 1;
+    }
 
-    execlp("neo-ssh.pl", "neo-ssh.pl", "64", argv[1], NULL);
+    execlp("neo-ssh.exp", "neo-ssh.exp", ip, NULL);
+
     return 0;
 }
