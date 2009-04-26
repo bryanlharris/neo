@@ -36,15 +36,10 @@ sub rdp_login {
 
 my @specs = (
     Param("rdp"),
-    Switch("screen"),
-    Switch("mkpass"),
-    Switch("help|h")->anycase(),
 );
 
 my $options = Getopt::Lucid->getopt( \@specs );
 
 my $rdp_ip          = $options->get_rdp;
-my $screen          = $options->get_screen;
 
 &rdp_login(&get_info($rdp_ip))          if $options->get_rdp;
-&mkpass                                 if $options->get_mkpass;
