@@ -6,7 +6,7 @@ PROG=neo
 
 all: clean $(PROG)
 
-install: $(PROG) $(SCRIPTS)
+install: uninstall $(PROG) $(SCRIPTS)
 	install -s $(PROG) /usr/local/bin && \
 		install $(SCRIPTS) /usr/local/bin && \
 		( cd /usr/local/bin && ln -f -s neo neo-help && \
