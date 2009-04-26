@@ -56,7 +56,14 @@ void handle_internal_command(int argc, char **argv, char **envp)
             continue;
         exit(p->fn(argc, argv, envp));
     }
-    exit(cmd_usage(argc, argv, envp));
+    exit(help_unknown_cmd(argc, argv, envp));
+}
+
+int help_unknown_cmd(int argc, char **argv, char**envp)
+{
+    char *cmd = argv[0];
+    fprintf(stderr, "neo: '%s' is not a neo command. See 'neo --help'.\n", cmd);
+    return 1;
 }
 
 int cmd_pix(int argc, char **argv, char **envp)

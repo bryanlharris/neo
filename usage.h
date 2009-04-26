@@ -19,3 +19,4 @@ extern int cmd_search(int argc, char **argv, char **envp);
 extern int cmd_ssh(int argc, char **argv, char **envp);
 extern int cmd_pix(int argc, char **argv, char **envp);
 extern int cmd_rdp(int argc, char **argv, char **envp);
+extern int help_unknown_cmd(int argc, char **argv, char**envp);
