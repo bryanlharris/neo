@@ -1,0 +1,35 @@
+#!/usr/bin/expect --
+
+set ipaddr [lindex $argv 0]
+set pass [exec neo search --showpasswords "$ipaddr " | grep -v ^- | awk {{print $4}}]
+
+set IPAddrRe {^(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$}
+if { ! [regexp -- $IPAddrRe $ipaddr] } {
+    puts "This does not look like a valid IP address."
+    exit
+    }
+
+set timeout -1
+spawn ssh -k -t -2 -4 -a -q -x \
+    -l root \
+    -o StrictHostKeyChecking=no \
+    -o Compression=no \
+    -o CheckHostIP=no \
+    -o PasswordAuthentication=yes \
+    -o PubkeyAuthentication=no \
+    -o RhostsRSAAuthentication=no \
+    -o RSAAuthentication=no \
+    -p 22 $ipaddr
+match_max 100000
+expect -re "assword"
+send -- "$pass\r"
+expect -re "(#.* )|(Press Space or Return to end)"
+send -- "exec bash\r"
+expect -re "# "
+send -- "export PS1='\\n\[\$USER\@\$(echo \$HOSTNAME | cut -d. -f1):\$PWD\]\\n# '\r"
+expect -re "# "
+set CTRLX \030
+interact {
+    -reset $CTRLX {exec kill -STOP [pid]}
+}
+exit
