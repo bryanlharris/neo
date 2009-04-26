@@ -78,7 +78,7 @@ int cmd_version(int argc, char **argv, char **envp)
 
 int cmd_usage(int argc, char **argv, char **envp)
 {
-    printf("usage: neo [version|help] [modifiers] [options] [regex|ipaddr]\n");
+    printf("usage: neo [command|version|help] [option] [regex|ipaddr]\n");
     return 0;
 }
 
