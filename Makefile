@@ -16,8 +16,8 @@ install: uninstall $(PROG) $(SCRIPTS)
 
 uninstall:
 	rm -fv /usr/local/bin/neo && \
-		rm -fv /usr/local/bin/neo{-help,-search,-pix,-ssh,-rdp}.pl && \
-		rm -fv /usr/local/bin/neo-{help,usage,mkpass,search,ssh,pix,rdp}
+		rm -fv /usr/local/bin/neo{-help,-search,-ssh,-rdp}.pl && \
+		rm -fv /usr/local/bin/neo{-pix}.exp && \
 
 LIBS= -lssl
 
