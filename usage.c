@@ -66,18 +66,6 @@ int help_unknown_cmd(int argc, char **argv, char**envp)
     return 1;
 }
 
-int cmd_pix(int argc, char **argv, char **envp)
-{
-    char *ip = argv[1];
-    if (check_ip(ip)) {
-        printf("not a valid ip\n");
-        return 1;
-    }
-
-    execlp("neo-pix.exp", "neo-pix.exp", ip, NULL);
-    return 0;
-}
-
 int cmd_rdp(int argc, char **argv, char **envp)
 {
     char *ip = argv[1];

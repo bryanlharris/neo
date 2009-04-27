@@ -18,8 +18,8 @@ uninstall:
 
 LIBS= -lssl
 
-neo: usage.o search.o ssh.o neo.o check-ip.o
-	$(CC) $(CFLAGS) -o neo usage.o search.o ssh.o neo.o check-ip.o $(LIBS)
+neo: usage.o search.o ssh.o pix.o neo.o check-ip.o
+	$(CC) $(CFLAGS) -o neo usage.o search.o ssh.o pix.o neo.o check-ip.o $(LIBS)
 
 check-ip.c: check-ip.re
 	re2c check-ip.re > check-ip.c
