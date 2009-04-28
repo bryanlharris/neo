@@ -3,7 +3,7 @@
 set ipaddr [lindex $argv 0]
 set pass [exec neo search --showpasswords new0 | head -1]
 set en [exec neo search --showpasswords new0 | tail -1]
-set stars [string length $en]
+set stars [string repeat "*" [string length $en]]
 
 set timeout -1
 spawn ssh -k -t -2 -4 -a -q -x \
