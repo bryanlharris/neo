@@ -7,15 +7,14 @@ sub get_info {
     my @results = `neo-search.pl 192 $query`;
     my $line;
     /\b$query\b/ and $line = $_ and last foreach (@results);
-    my ($computername,$ip,$password) = (split / +/, $line)[1,2,3];
+    my ($ip,$password) = (split / +/, $line)[2,3];
     $ip = $1 if $ip =~
         /((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))/;
-    return ($computername,$ip,$password);
+    return ($ip,$password);
 }
 
 sub rdp_login {
-    my ($computername,$ip,$password) = @_;
-    $computername = $1 if $computername =~ /.*?\.(.*?)/;
+    my ($ip,$password) = @_;
 
     my @isn = qw/
         10.2.38.
