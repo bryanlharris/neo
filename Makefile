@@ -16,7 +16,7 @@ uninstall:
 		rm -fv /usr/local/bin/neo{-help,-search,-rdp}.pl && \
 		rm -fv /usr/local/bin/neo{-pix,-ssh}.exp
 
-LIBS= -lssl
+LIBS=
 
 neo: usage.o search.o ssh.o pix.o neo.o check-ip.o
 	$(CC) $(CFLAGS) -o neo usage.o search.o ssh.o pix.o neo.o check-ip.o $(LIBS)
