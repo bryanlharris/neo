@@ -1,15 +1,47 @@
-[ssh]
-    args = -kt24aqx \
-    -o StrictHostKeyChecking=no \
-    -o Compression=no \
-    -o CheckHostIP=no \
-    -o PasswordAuthentication=yes \
-    -o PubkeyAuthentication=no \
-    -o RhostsRSAAuthentication=no \
-    -o RSAAuthentication=no
+[args]
+    ssh = -k -t -2 -4 -a -q -x \
+            -o StrictHostKeyChecking=no \
+            -o Compression=no \
+            -o CheckHostIP=no \
+            -o PasswordAuthentication=yes \
+            -o PubkeyAuthentication=no \
+            -o RhostsRSAAuthentication=no \
+            -o RSAAuthentication=no \
+            2>/dev/null
 
-[rdp]
-    args = -a 16 -g 1024x768 2>/dev/null
+    pix = -k -t -2 -4 -a -q -x \
+            -o StrictHostKeyChecking=no \
+            -o Compression=no \
+            -o CheckHostIP=no \
+            -o PasswordAuthentication=yes \
+            -o PubkeyAuthentication=no \
+            -o RhostsRSAAuthentication=no \
+            -o RSAAuthentication=no \
 
-[vnc]
-    args = -geometry 1024x768 2>/dev/null
+    rdp = -a 16 -g 1024x768 2>/dev/null
+
+    vnc = -geometry 1024x768 \
+            -AutoSelect=off \
+            -FullColor \
+            2>/dev/null
+
+# [login]
+#     uber = no
+#     dco  = no
+#     pix  = auto
+#
+# [uber]
+#     user = bharris
+#     pass = ***REMOVED***
+#
+# [dco]
+#     user = bharris
+#     pass = ***REMOVED***
+#
+# [rdp]
+#     domain = auto
+#
+# [port]
+#     ssh = auto
+#     pix = auto
+#     rdp = auto
