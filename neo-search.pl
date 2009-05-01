@@ -3,7 +3,7 @@
 use strict;
 
 sub save_local_cache {
-    my @passwords = `ssh pinky sudo cat a/{pix,mds,nix,win,domain-trust,netdev}-passwords`;
+    my @passwords = `ssh pinky sudo cat a/{pix,nix,win,domain-trust,netdev}-passwords`;
     open PASSWORDS, ">$ENV{HOME}/passwords";
     print PASSWORDS $_ foreach (@passwords);
     close PASSWORDS;
