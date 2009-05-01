@@ -10,50 +10,25 @@ static int c;
 char opt[MAXNAME];
 char var[MAXNAME];
 char val[MAXNAME];
-struct opts sshopts;
-struct opts rdpopts;
-struct opts pixopts;
-struct opts vncopts;
 
-/*
-int main(int argc, char **argv) {
-    config_file = fopen("/home/bharris/src/neo/neoconfig", "r");
-    parse_config_file();
-    printf("%s\n", sshopts.args);
-}
-*/
+struct opts options;
 
-int opt_ssh(char *var, char *val)
+int opt_args(char *var, char *val)
 {
-    if(!strcmp("args", var)) {
-        strcpy(sshopts.args,val);
+    if(!strcmp("ssh", var)) {
+        strcpy(options.sshargs,val);
         return 0;
     }
-    return 1;
-}
-
-int opt_rdp(char *var, char *val)
-{
-    if(!strcmp("args", var)) {
-        strcpy(rdpopts.args,val);
+    if(!strcmp("pix", var)) {
+        strcpy(options.pixargs,val);
         return 0;
     }
-    return 1;
-}
-
-int opt_pix(char *var, char *val)
-{
-    if(!strcmp("args", var)) {
-        strcpy(pixopts.args,val);
+    if(!strcmp("rdp", var)) {
+        strcpy(options.rdpargs,val);
         return 0;
     }
-    return 1;
-}
-
-int opt_vnc(char *var, char *val)
-{
-    if(!strcmp("args", var)) {
-        strcpy(vncopts.args,val);
+    if(!strcmp("vnc", var)) {
+        strcpy(options.vncargs,val);
         return 0;
     }
     return 1;
@@ -65,10 +40,7 @@ int handle_option(char *opt, char *var, char *val)
         const char *opt;
         int (*fn)(char *, char *);
     } options[] = {
-        { "ssh", opt_ssh },
-        { "rdp", opt_rdp },
-        { "pix", opt_pix },
-        { "vnc", opt_vnc },
+        { "args", opt_args },
     };
 
     int i;
@@ -84,6 +56,7 @@ int handle_option(char *opt, char *var, char *val)
 
 void parse_config_file()
 {
+    config_file = fopen("/home/bharris/src/neo/neoconfig", "r");
     do {
         memset(opt,0,MAXNAME);
         baselen = 0;

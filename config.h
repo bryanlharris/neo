@@ -7,10 +7,7 @@
 #define ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
 
 extern int get_next_char(void);
-extern int opt_ssh(char *var, char *val);
-extern int opt_rdp(char *var, char *val);
-extern int opt_pix(char *var, char *val);
-extern int opt_vnc(char *var, char *val);
+extern int opt_args(char *var, char *val);
 extern int handle_option(char *opt, char *var, char *val);
 extern void parse_config_file();
 
@@ -21,5 +18,8 @@ struct opts {
     unsigned background:1;
     char user[MAXNAME];
     char pass[MAXNAME];
-    char args[MAXNAME];
+    char sshargs[MAXNAME];
+    char pixargs[MAXNAME];
+    char rdpargs[MAXNAME];
+    char vncargs[MAXNAME];
 };
