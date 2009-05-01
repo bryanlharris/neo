@@ -67,8 +67,8 @@ void parse_config_file()
                 config_file = NULL;
                 break;
             }
-            } while (c != '[');
-    
+        } while (c != '[');
+
         if(config_file == NULL)
             continue;
     
