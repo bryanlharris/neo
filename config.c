@@ -7,6 +7,7 @@
 FILE *config_file;
 static int baselen;
 static int c;
+static int comment;
 char opt[MAXNAME];
 char var[MAXNAME];
 char val[MAXNAME];
@@ -56,8 +57,16 @@ int handle_option(char *opt, char *var, char *val)
 
 void parse_config_file()
 {
+    c = 0;
+    comment = 0;
     config_file = fopen("/home/bharris/src/neo/neoconfig", "r");
     do {
+        if(comment == 1) {
+            do c = get_next_char();
+                while(c != '\n');
+            comment = 0;
+            continue;
+        }
         memset(opt,0,MAXNAME);
         baselen = 0;
     
@@ -67,10 +76,14 @@ void parse_config_file()
                 config_file = NULL;
                 break;
             }
-        } while (c != '[');
+        } while (c != '[' && c != '#');
 
         if(config_file == NULL)
             continue;
+        if(c == '#') {
+            comment = 1;
+            continue;
+        }
     
         do {
             c = get_next_char();
