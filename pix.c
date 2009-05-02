@@ -16,6 +16,6 @@ int cmd_pix(int argc, char **argv, char **envp)
         return 1;
     }
 
-    execlp("neo-pix.exp", "neo-pix.exp", ip, options.uberuser, options.uberpass, NULL);
+    execlp("neo-pix.exp", "neo-pix.exp", ip, options.dcouser, options.dcopass, NULL);
     return 0;
 }
