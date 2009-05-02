@@ -5,15 +5,17 @@
 #include <stdlib.h>
 #include "usage.h"
 #include "check-ip.h"
+#include "config.h"
 
 int cmd_pix(int argc, char **argv, char **envp)
 {
+    extern struct opts options;
     char *ip = argv[1];
     if (check_ip(ip)) {
         printf("not a valid ip\n");
         return 1;
     }
 
-    execlp("neo-pix.exp", "neo-pix.exp", ip, NULL);
+    execlp("neo-pix.exp", "neo-pix.exp", ip, options.uberuser, options.uberpass, NULL);
     return 0;
 }

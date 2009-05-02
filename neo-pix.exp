@@ -1,14 +1,16 @@
 #!/usr/bin/expect --
 
 set ipaddr [lindex $argv 0]
-set pass [exec neo search --showpasswords new0 | head -1]
-set en [exec neo search --showpasswords new0 | tail -1]
-set stars [string repeat "*" [string length $en]]
+set user [lindex $argv 1]
+set pass [lindex $argv 2]
+set stars [string repeat "*" [string length $pass]]
 
 set timeout -1
+match_max 100000
+
 spawn ssh -k -t -2 -4 -a -q -x \
     -p 22 \
-    -l pix \
+    -l $user \
     -o StrictHostKeyChecking=no \
     -o Compression=no \
     -o CheckHostIP=no \
@@ -17,8 +19,7 @@ spawn ssh -k -t -2 -4 -a -q -x \
     -o RhostsRSAAuthentication=no \
     -o RSAAuthentication=no \
     $ipaddr
-match_max 100000
-expect -exact "pix@$ipaddr's password: "
+expect -exact "$user@$ipaddr's password: "
 send -- "$pass\r"
 expect -exact "\r
 Type help or '?' for a list of available commands.\r"
@@ -26,7 +27,7 @@ expect -exact "> "
 send -- "en\r"
 expect -exact "en\r
 Password: "
-send -- "$en"
+send -- "$pass"
 expect -exact "$stars"
 send -- "\r"
 expect -exact "\r"

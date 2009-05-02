@@ -26,23 +26,10 @@
             -FullColor \
             2>/dev/null
 
-# [login]
-#     uber = no
-#     dco  = no
-#     pix  = auto
-#
-# [uber]
-#     user = bharris
-#     pass = ***REMOVED***
-#
-# [dco]
-#     user = bharris
-#     pass = ***REMOVED***
-#
-# [rdp]
-#     domain = auto
-#
-# [port]
-#     ssh = auto
-#     pix = auto
-#     rdp = auto
+[uber]
+    user = bharris
+    pass = ***REMOVED***
+
+[dco]
+    user = bharris
+    pass = ***REMOVED***
