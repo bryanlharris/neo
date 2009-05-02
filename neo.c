@@ -11,7 +11,6 @@ int main(int argc, char **argv, char **envp)
     char *cmd = argv[0] ? argv[0] : "neo-help";
     char *slash = strrchr(cmd, '/');
     const char *exec_path = NULL;
-    extern struct opts options;
 
     if (slash) {
         *slash++ = 0;
