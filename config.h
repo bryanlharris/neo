@@ -15,9 +15,10 @@ struct opts {
     unsigned tty:1;
     unsigned dco:1;
     unsigned uber:1;
-    unsigned background:1;
-    char user[MAXNAME];
-    char pass[MAXNAME];
+    char uberuser[MAXNAME];
+    char uberpass[MAXNAME];
+    char dcouser[MAXNAME];
+    char dcopass[MAXNAME];
     char sshargs[MAXNAME];
     char pixargs[MAXNAME];
     char rdpargs[MAXNAME];

@@ -78,6 +78,7 @@ void parse_config_file()
             }
         } while (c != '[' && c != '#');
 
+        newopt:
         if(config_file == NULL)
             continue;
         if(c == '#') {
@@ -93,11 +94,24 @@ void parse_config_file()
         baselen--;
         opt[baselen] = 0;
 
+        newvar:
+        if(comment == 1) {
+            do c = get_next_char();
+                while(c != '\n');
+            comment = 0;
+        }
         baselen = 0;
         memset(var,0,MAXNAME);
-    
         do c = get_next_char();
-            while (!isalnum(c));
+            while (!isalnum(c) && c != '[' && c != EOF && c != '#');
+        if(c == '[')
+            goto newopt;
+        if(c == EOF)
+            break;
+        if(c == '#') {
+            comment = 1;
+            goto newvar;
+        }
         do {
             var[baselen] = c;
             baselen++;
@@ -106,15 +120,13 @@ void parse_config_file()
     
         memset(val,0,MAXNAME);
         baselen=0;
-    
         do c = get_next_char();
             while (c != '=');
-    
         do c = get_next_char();
             while (isspace(c));
+
         val[baselen] = c;
         baselen++;
-    
         do {
             c = get_next_char();
             if(c == '\\') {
@@ -131,6 +143,7 @@ void parse_config_file()
         baselen++;
     
         handle_option(opt, var, val);
+        goto newvar;
     } while (config_file != NULL);
 }
 
