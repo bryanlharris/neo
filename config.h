@@ -8,6 +8,7 @@
 
 extern int get_next_char(void);
 extern int opt_args(char *var, char *val);
+extern int opt_uber(char *var, char *val);
 extern int handle_option(char *opt, char *var, char *val);
 extern void parse_config_file();
 
