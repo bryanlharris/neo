@@ -162,6 +162,10 @@ void parse_config_file()
                 if(c == '\n')
                     do c = get_next_char();
                         while (isspace(c));
+                else {
+                    val[baselen] = '\\';
+                    baselen++;
+                }
             }
             val[baselen] = c;
             baselen++;
