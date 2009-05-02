@@ -48,6 +48,19 @@ int opt_uber(char *var, char *val)
     return 1;
 }
 
+int opt_dco(char *var, char *val)
+{
+    if(!strcmp("user", var)) {
+        strcpy(options.dcouser,val);
+        return 0;
+    }
+    if(!strcmp("pass", var)) {
+        strcpy(options.dcopass,val);
+        return 0;
+    }
+    return 1;
+}
+
 int handle_option(char *opt, char *var, char *val)
 {
     static struct opt_struct {
@@ -56,6 +69,7 @@ int handle_option(char *opt, char *var, char *val)
     } options[] = {
         { "args", opt_args },
         { "uber", opt_uber },
+        { "dco", opt_dco },
     };
 
     int i;
