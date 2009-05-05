@@ -15,7 +15,7 @@ my @quote = <<'        FINIS' =~ /\s*,(.*)/g;;
 ,       mkpass                              Generate random password
 ,
 ,Note
-,       During an ssh session, you can type ctrl-x ctrl-z to put the remote session into the background.
+,       During an ssh session, you can type ctrl-x to put the remote session into the background.
         FINIS
 
 print "$_\n" foreach (@quote);
