@@ -3,9 +3,7 @@ About
 This is a hobby to make a script which is just a cli
 version of nerd/s.  Type neo --help for more information.
 
-Installation
-
-The program files get installed to /usr/local/bin.
+Installation (to /usr/local/bin)
 
     make
     make install ;# as root
