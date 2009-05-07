@@ -11,6 +11,7 @@ static int comment;
 char opt[MAXNAME];
 char var[MAXNAME];
 char val[MAXNAME];
+char conf[MAXNAME];
 
 struct opts options;
 
@@ -87,7 +88,9 @@ void parse_config_file()
 {
     c = 0;
     comment = 0;
-    config_file = fopen("/home/bharris/src/neo/neoconfig", "r");
+    strcat(conf,getenv("HOME"));
+    strcat(conf,"/.neoconfig");
+    config_file = fopen(conf, "r");
     do {
         if(comment == 1) {
             do c = get_next_char();
