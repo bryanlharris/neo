@@ -18,8 +18,8 @@ uninstall:
 
 LIBS= -lexpect5.44.1.11 -ltcl -lm -lssl
 
-neo: usage.o search.o ssh.o builtin-pix.o neo.o check-ip.o config.o
-	$(CC) $(CFLAGS) -o neo usage.o search.o ssh.o builtin-pix.o neo.o check-ip.o config.o $(LIBS)
+neo: usage.o search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o
+	$(CC) $(CFLAGS) -o neo usage.o search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o $(LIBS)
 
 check-ip.c: check-ip.re
 	re2c check-ip.re > check-ip.c
