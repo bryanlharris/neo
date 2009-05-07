@@ -22,7 +22,6 @@ sub search {
         exit 0;
     }
 
-    print "-" x 80 . "\n";
      /^([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?) +([^ ]+?)$/ and
         printf "%-14.14s %-28.28s %-15.15s %-12.12s %-7.7s\n",
             $1,
@@ -63,7 +62,6 @@ sub search {
             $show_passwords ? $4 : "############",
             $5
             foreach (@info);
-    print "-" x 80 . "\n";
 }
 
 &search($ARGV[1],1) if $ARGV[0] eq "192" and $ARGV[1];
