@@ -25,4 +25,4 @@ check-ip.c: check-ip.re
 	re2c --case-insensitive check-ip.re > check-ip.c
 
 clean:
-	rm -fv *.o $(PROG) check-ip.c && find . -type l -maxdepth 1 -exec rm -rfv {} \;
+	rm -f *.o $(PROG) check-ip.c
