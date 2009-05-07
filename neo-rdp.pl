@@ -28,7 +28,7 @@ sub rdp_login {
     grep { $ip =~ /$_/ } @isn and $user = "ISN-PUBLIC\\\\sqltest";
     grep { $ip =~ /$_/ } @isn and $password = `neo-search.pl 192 isn.*dc1 | grep -v ^- | awk '{print \$4}'`;
     grep { $ip =~ /$_/ } @informed and $user = "IDC\\\\sqltest";
-    grep { $ip =~ /$_/} @informed and $password = `neo-search.pl 192 informed.*dc1\\  | grep -v ^- | awk '{print \$4}'`;
+    grep { $ip =~ /$_/ } @informed and $password = `neo-search.pl 192 informed.*dc1\\  | grep -v ^- | awk '{print \$4}'`;
     system("rdesktop -a 16 -g 1024x768 -u $user -p \'$password\' $ip 2>/dev/null &");
 }
 
