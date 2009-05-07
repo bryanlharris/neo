@@ -22,7 +22,7 @@ neo: usage.o search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o
 	$(CC) $(CFLAGS) -o neo usage.o search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o $(LIBS)
 
 check-ip.c: check-ip.re
-	re2c check-ip.re > check-ip.c
+	re2c --case-insensitive check-ip.re > check-ip.c
 
 clean:
 	rm -fv *.o $(PROG) check-ip.c && find . -type l -maxdepth 1 -exec rm -rfv {} \;
