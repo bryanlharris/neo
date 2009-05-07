@@ -26,10 +26,3 @@
             -FullColor \
             2>/dev/null
 
-[uber]
-    user = bharris
-    pass = ***REMOVED***
-
-[dco]
-    user = bharris
-    pass = ***REMOVED***
