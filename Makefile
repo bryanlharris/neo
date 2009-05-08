@@ -4,7 +4,7 @@ CC=gcc
 SCRIPTS=neo-help.pl neo-search.pl neo-pix.exp neo-ssh.exp neo-rdp.pl
 PROG=neo
 
-all: clean $(PROG)
+all: $(PROG)
 
 install: uninstall $(PROG) $(SCRIPTS)
 	install -s $(PROG) /usr/local/bin && \
