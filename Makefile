@@ -12,8 +12,7 @@ config: $(CONFIG)
 
 install: $(PROG)
 	install -s $(PROG) /usr/local/bin && \
-		install $(SCRIPTS) /usr/local/bin && \
-		make clean
+		install $(SCRIPTS) /usr/local/bin
 
 uninstall:
 	rm -fv /usr/local/bin/neo && \
