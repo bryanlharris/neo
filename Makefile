@@ -6,7 +6,7 @@ PROG=neo
 
 all: $(PROG)
 
-install: uninstall $(PROG) $(SCRIPTS)
+install: $(PROG) $(SCRIPTS)
 	install -s $(PROG) /usr/local/bin && \
 		install $(SCRIPTS) /usr/local/bin && \
 		make clean
