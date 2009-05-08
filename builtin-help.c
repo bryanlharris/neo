@@ -1,9 +1,4 @@
 #include <stdio.h>
-#include <string.h>
-#include <stdarg.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include "usage.h"
 
 int list_common_cmds_help()
 {
