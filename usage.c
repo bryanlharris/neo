@@ -94,7 +94,11 @@ int cmd_help(int argc, char **argv, char **envp)
 {
     char *help_cmd = argv[1];
     if (!help_cmd)
+    {
+        cmd_usage(0, NULL, NULL);
+        putchar('\n');
         list_common_cmds_help();
+    }
     return 0;
 }
 

@@ -1,10 +1,9 @@
 #include <stdio.h>
+#include "usage.h"
 
 int list_common_cmds_help()
 {
     char *msg[] = {
-        "usage: neo [COMMAND] [option] [ARG]",
-        "",
         "Commands are",
         "       version                             Show the version",
         "       help                                Show this page",
@@ -14,8 +13,7 @@ int list_common_cmds_help()
         "       pix [ipaddr]                        Login to cisco",
         "       mkpass                              Generate random password",
         "",
-        "Note",
-        "       During an ssh session, you can type ctrl-x to put the remote session into the background.",
+        "Note:  During an ssh session, you can type ctrl-x to put the remote session into the background.",
         NULL
     };
 
