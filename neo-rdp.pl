@@ -8,8 +8,6 @@ sub get_info {
     my $line;
     /\b$query\b/ and $line = $_ and last foreach (@results);
     my ($ip,$password) = (split / +/, $line)[2,3];
-    $ip = $1 if $ip =~
-        /((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))/;
     return ($ip,$password);
 }
 
