@@ -16,7 +16,7 @@ uninstall:
 		rm -fv /usr/local/bin/neo{-help,-search,-rdp}.pl && \
 		rm -fv /usr/local/bin/neo{-pix,-ssh}.exp
 
-LIBS= -lexpect5.44.1.11 -ltcl -lm -lssl
+LIBS= -I /usr/lib64/expect5.44.1.11 -Lexpect5.44.1.11 -ltcl -lm -lssl
 
 neo: usage.o search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o
 	$(CC) $(CFLAGS) -o neo usage.o search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o $(LIBS)
