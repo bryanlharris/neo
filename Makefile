@@ -3,8 +3,12 @@ CC=gcc
 
 SCRIPTS=neo-search.pl neo-pix.exp neo-ssh.exp neo-rdp.pl
 PROG=neo
+CONFIG=neoconfig
 
 all: $(PROG)
+
+config: $(CONFIG)
+	install -m 0600 $(CONFIG) ~/.$(CONFIG)
 
 install: $(PROG)
 	install -s $(PROG) /usr/local/bin && \

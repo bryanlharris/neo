@@ -5,7 +5,12 @@ A hobby to do a CLI like nerd/s.  Type neo help for usage.
 Installation (to /usr/local/bin)
 
     make
+    make config
     make install ;# as root
+
+Set your password
+
+    vi ~/.neoconfig
 
 Removal
 
