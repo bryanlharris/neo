@@ -26,3 +26,10 @@
             -FullColor \
             2>/dev/null
 
+[uber]
+    user = 
+    pass = 
+
+[dco]
+    user = 
+    pass = 
