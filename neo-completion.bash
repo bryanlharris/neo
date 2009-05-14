@@ -35,9 +35,10 @@ _neo()
     return 0
 }
 
-export search_opts="showpasswords --showpasswords $(neo search . | awk '{print tolower($1),tolower($2)}')"
-export ssh_opts="$(neo search . | awk '{print tolower($1),tolower($2)}')"
-export rdp_opts="$(neo search . | awk '{print tolower($1),tolower($2)}')"
-export pix_opts="$(neo search . | awk '{print tolower($1),tolower($2)}')"
-export showpasswords_opts="$(neo search . | awk '{print tolower($1),tolower($2)}')"
+export default_opts="$(neo search . | awk '{print tolower($1) ".*" tolower($2)}')"
+export search_opts="showpasswords --showpasswords $default_opts"
+export ssh_opts="$default_opts"
+export rdp_opts="$default_opts"
+export pix_opts="$default_opts"
+export showpasswords_opts="$default_opts"
 complete -o default -F _neo neo
