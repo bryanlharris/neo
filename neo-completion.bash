@@ -35,7 +35,7 @@ _neo()
     return 0
 }
 
-export default_opts="$(neo search . | awk '{print tolower($1) ".*" tolower($2)}')"
+export default_opts="$(neo search . | awk '{print tolower($1) ".*" tolower($2) ".*" $3}')"
 export search_opts="showpasswords --showpasswords $default_opts"
 export ssh_opts="$default_opts"
 export rdp_opts="$default_opts"
