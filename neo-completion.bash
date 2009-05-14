@@ -35,9 +35,9 @@ _neo()
     return 0
 }
 
-export search_opts="showpasswords --showpasswords $(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
-export ssh_opts="screen --screen $(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
-export rdp_opts="console --console $(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
-export pix_opts="$(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
-export showpasswords_opts="$(neo search . | grep -v ^- | awk '{print $2}') $(neo search . | grep -v ^- | awk '{print $3}')"
-complete -F _neo neo
+export search_opts="showpasswords --showpasswords $(neo search . | awk '{print tolower($1),tolower($2)}')"
+export ssh_opts="$(neo search . | awk '{print tolower($1),tolower($2)}')"
+export rdp_opts="$(neo search . | awk '{print tolower($1),tolower($2)}')"
+export pix_opts="$(neo search . | awk '{print tolower($1),tolower($2)}')"
+export showpasswords_opts="$(neo search . | awk '{print tolower($1),tolower($2)}')"
+complete -o default -F _neo neo
