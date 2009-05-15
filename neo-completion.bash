@@ -28,7 +28,7 @@ _neo()
             return 0
             ;;
         *)
-        ;;
+            ;;
     esac
 
     COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
