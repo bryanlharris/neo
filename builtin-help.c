@@ -7,7 +7,7 @@ int list_common_cmds_help()
         "Commands are",
         "       version                             Show the version",
         "       help                                Show this page",
-        "       search [--showpasswords] [pattern]  Search pinky password files (case insensitive)",
+        "       search [showpasswords] [pattern]    Search pinky password files (case insensitive)",
         "       ssh [ipaddr]                        Login to linux",
         "       rdp [ipaddr]                        Login to windows",
         "       pix [ipaddr]                        Login to cisco",
