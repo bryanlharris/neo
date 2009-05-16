@@ -1,7 +1,15 @@
 #!/usr/bin/expect --
 
-set ipaddr [lindex $argv 0]
-set pass [exec neo search --showpasswords "$ipaddr " | grep -v ^- | awk {{print $4}}]
+set cmd [lindex $argv 0]
+
+if {$cmd == 128} {
+    set regex [lindex $argv 1]
+    set ipaddr [exec neo search "$regex" | awk {{print $3}}]
+    set pass [exec neo search --showpasswords "$regex" | awk {{print $4}}]
+} elseif {$cmd == 192} {
+    set ipaddr [lindex $argv 1]
+    set pass [exec neo search --showpasswords "$ipaddr " | awk {{print $4}}]
+}
 
 set timeout -1
 spawn ssh -k -t -2 -4 -a -q -x \
