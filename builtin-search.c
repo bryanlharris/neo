@@ -5,18 +5,11 @@
 #include <stdlib.h>
 #include "usage.h"
 
-struct search_opt {
-    unsigned showpasswords:1;
-};
-
 int cmd_search(int argc, char **argv, char **envp)
 {
     int no_more_arg = 0;
     char **dst, **src;
-    struct search_opt opt;
 
-    memset(&opt, 0, sizeof(opt));
-    
     for (dst = src = &argv[1]; src < argc + argv; ) {
         char *arg = *src++;
         if (!no_more_arg) {
@@ -25,17 +18,13 @@ int cmd_search(int argc, char **argv, char **envp)
                 *dst++ = arg;
                 continue;
             }
-            if (!strcmp("--showpasswords", arg) ||
-                !strcmp("showpasswords", arg)) {
-                opt.showpasswords = 1;
-                continue;
+            if (!strcmp("showpasswords", arg)) {
+                arg = *src++;
+                execlp("neo-search.pl", "neo-search.pl", "192", arg, NULL);
             }
         }
         *dst++ = arg;
     }
-
-    if (opt.showpasswords)
-        execlp("neo-search.pl", "neo-search.pl", "192", argv[1], NULL);
 
     execlp("neo-search.pl", "neo-search.pl", "128", argv[1], NULL);
     return 0;
