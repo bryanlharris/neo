@@ -13,6 +13,7 @@ struct ssh_opt {
 int cmd_ssh(int argc, char **argv, char **envp)
 {
     struct ssh_opt opt;
+    char *qry = argv[1];
     char *ip = argv[1];
     if (check_ip(ip)) {
         printf("not a valid ip.\n");
