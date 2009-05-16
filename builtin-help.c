@@ -7,13 +7,15 @@ int list_common_cmds_help()
         "Commands are",
         "       version                             Show the version",
         "       help                                Show this page",
-        "       search [showpasswords] [pattern]    Search pinky password files (case insensitive)",
-        "       ssh [ipaddr]                        Login to linux",
+        "       search [showpasswords] [regex]      Search pinky password files",
+        "       ssh [ipaddr|regex]                  Login to linux",
         "       rdp [ipaddr]                        Login to windows",
         "       pix [ipaddr]                        Login to cisco",
         "       mkpass                              Generate random password",
         "",
-        "Note:  During an ssh session, you can type ctrl-x to put the remote session into the background.",
+        "Notes",
+        "       During an ssh session, you can type ctrl-x to put the remote session into the background.",
+        "       All searching is case insensitive.",
         NULL
     };
 
