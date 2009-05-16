@@ -23,10 +23,6 @@ _neo()
             COMPREPLY=( $(compgen -W "${pix_opts}" -- ${cur}) )
             return 0
             ;;
-        --showpasswords)
-            COMPREPLY=( $(compgen -W "${showpasswords_opts}" -- ${cur}) )
-            return 0
-            ;;
         *)
             ;;
     esac
@@ -36,7 +32,7 @@ _neo()
 }
 
 export default_opts="$(neo search . | awk '{print tolower($1) ".*" tolower($2) ".*" $3}')"
-export search_opts="showpasswords --showpasswords $default_opts"
+export search_opts="showpasswords $default_opts"
 export ssh_opts="$default_opts"
 export rdp_opts="$default_opts"
 export pix_opts="$default_opts"
