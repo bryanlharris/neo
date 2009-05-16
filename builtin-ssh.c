@@ -15,12 +15,43 @@ int cmd_ssh(int argc, char **argv, char **envp)
     struct ssh_opt opt;
     char *qry = argv[1];
     char *ip = argv[1];
-    if (check_ip(ip)) {
+    char **dst, **src;
+    int no_more_arg = 0;
+
+    memset(&opt, 0, sizeof(opt));
+    for (dst = src = &argv[1]; src < argc + argv; ) {
+        char *arg = *src++;
+        if (!no_more_arg) {
+            if (!strcmp("--", arg)) {
+                no_more_arg = 1;
+                *dst++ = arg;
+                continue;
+            }
+            if (!strcmp("--ip", arg) ||
+                !strcmp("ip", arg)) {
+                opt.ip = 1;
+                if (argv[2])
+                    ip = argv[2];
+                else
+                {
+                    printf("not a valid ip.\n");
+                    return 1;
+                }
+                continue;
+            }
+        }
+        *dst++ = arg;
+    }
+
+    if (opt.ip && check_ip(ip)) {
         printf("not a valid ip.\n");
         return 1;
     }
 
-    execlp("neo-ssh.exp", "neo-ssh.exp", ip, NULL);
+    if (opt.ip)
+        execlp("neo-ssh.exp", "neo-ssh.exp", "192", ip, NULL);
+
+    execlp("neo-ssh.exp", "neo-ssh.exp", "128", qry, NULL);
 
     return 0;
 }
