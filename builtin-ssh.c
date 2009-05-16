@@ -30,8 +30,10 @@ int cmd_ssh(int argc, char **argv, char **envp)
             if (!strcmp("--ip", arg) ||
                 !strcmp("ip", arg)) {
                 opt.ip = 1;
-                if (argv[2])
-                    ip = argv[2];
+                if (src < argc + argv) {
+                    arg = *src++;
+                    ip = arg;
+                }
                 else
                 {
                     printf("not a valid ip.\n");
