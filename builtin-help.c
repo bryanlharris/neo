@@ -8,7 +8,7 @@ int list_common_cmds_help()
         "       version                             Show the version",
         "       help                                Show this page",
         "       search [showpasswords] [regex]      Search pinky password files",
-        "       ssh [ipaddr|regex]                  Login to linux",
+        "       ssh [--ip=ipaddr|regex]             Login to linux",
         "       rdp [ipaddr]                        Login to windows",
         "       pix [ipaddr]                        Login to cisco",
         "       mkpass                              Generate random password",
