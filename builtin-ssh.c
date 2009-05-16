@@ -6,6 +6,10 @@
 #include "usage.h"
 #include "check-ip.h"
 
+struct ssh_opt {
+    unsigned ip:1;
+};
+
 int cmd_ssh(int argc, char **argv, char **envp)
 {
     char *ip = argv[1];
