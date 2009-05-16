@@ -14,7 +14,7 @@ int cmd_ssh(int argc, char **argv, char **envp)
 {
     struct ssh_opt opt;
     char *qry = argv[1];
-    char *ip = argv[1];
+    char *ip = NULL;
     char **dst, **src;
     int no_more_arg = 0;
 
@@ -27,18 +27,11 @@ int cmd_ssh(int argc, char **argv, char **envp)
                 *dst++ = arg;
                 continue;
             }
-            if (!strcmp("--ip", arg) ||
-                !strcmp("ip", arg)) {
+            if (!strncmp("--ip=", arg, 5)) {
                 opt.ip = 1;
-                if (src < argc + argv) {
-                    arg = *src++;
-                    ip = arg;
-                }
-                else
-                {
-                    printf("not a valid ip.\n");
-                    return 1;
-                }
+                arg += 5;
+                ip = malloc(strlen(arg) * sizeof(char));
+                strcpy(ip, arg);
                 continue;
             }
         }
