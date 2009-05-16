@@ -16,6 +16,9 @@ int list_common_cmds_help()
         "Notes",
         "       During an ssh session, you can type ctrl-x to put the remote session into the background.",
         "       All searching is case insensitive.",
+        "",
+        "Caveats",
+        "       During an ssh session, you cannot quit from a program like pico, because that would require ctrl-x.",
         NULL
     };
 
