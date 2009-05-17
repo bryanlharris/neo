@@ -16,6 +16,7 @@ int cmd_ssh(int argc, char **argv, char **envp)
     char *qry = argv[1];
     char *ip = malloc(16*sizeof(char));
     char **dst, **src;
+    char rmt[50] = "";
     int no_more_arg = 0;
 
     memset(ip, 0, 16*sizeof(char));
@@ -34,6 +35,9 @@ int cmd_ssh(int argc, char **argv, char **envp)
                 strcpy(ip, arg);
                 continue;
             }
+        } else {
+            strcat(rmt,arg);
+            strcat(rmt, " ");
         }
         *dst++ = arg;
     }
