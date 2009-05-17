@@ -14,10 +14,11 @@ int cmd_ssh(int argc, char **argv, char **envp)
 {
     struct ssh_opt opt;
     char *qry = argv[1];
-    char *ip = NULL;
+    char *ip = malloc(16*sizeof(char));
     char **dst, **src;
     int no_more_arg = 0;
 
+    memset(ip, 0, 16*sizeof(char));
     memset(&opt, 0, sizeof(opt));
     for (dst = src = &argv[1]; src < argc + argv; ) {
         char *arg = *src++;
@@ -30,7 +31,6 @@ int cmd_ssh(int argc, char **argv, char **envp)
             if (!strncmp("--ip=", arg, 5)) {
                 opt.ip = 1;
                 arg += 5;
-                ip = malloc(strlen(arg) * sizeof(char));
                 strcpy(ip, arg);
                 continue;
             }
