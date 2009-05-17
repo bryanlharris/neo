@@ -47,10 +47,17 @@ int cmd_ssh(int argc, char **argv, char **envp)
         return 1;
     }
 
-    if (opt.ip)
-        execlp("neo-ssh.exp", "neo-ssh.exp", "192", ip, NULL);
-
-    execlp("neo-ssh.exp", "neo-ssh.exp", "128", qry, NULL);
+    if (no_more_arg) {
+        if (opt.ip)
+            execlp("neo-ssh.exp", "neo-ssh.exp", "240", ip, rmt, NULL);
+        else
+            execlp("neo-ssh.exp", "neo-ssh.exp", "224", qry, rmt, NULL);
+    } else {
+        if (opt.ip)
+            execlp("neo-ssh.exp", "neo-ssh.exp", "192", ip, NULL);
+        else
+            execlp("neo-ssh.exp", "neo-ssh.exp", "128", qry, NULL);
+    }
 
     return 0;
 }
