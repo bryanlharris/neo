@@ -11,7 +11,7 @@ int list_common_cmds_help()
         "       ssh [--ip=ipaddr|regex] [-- cmd]    Login to linux",
         "       rdp [ipaddr]                        Login to windows",
         "       pix [ipaddr]                        Login to cisco",
-        "       mkpass                              Generate random password",
+        "       mkpass                              Create random password (requires apg)",
         "",
         "Notes",
         "       During an ssh session, you can type ctrl-x to put the remote session into the background.",
