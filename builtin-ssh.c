@@ -29,9 +29,9 @@ int cmd_ssh(int argc, char **argv, char **envp)
                 *dst++ = arg;
                 continue;
             }
-            if (!strncmp("--ip=", arg, 5)) {
+            if (!strcmp("--ip", arg)) {
                 opt.ip = 1;
-                arg += 5;
+                arg = *src++;
                 strcpy(ip, arg);
                 continue;
             }
