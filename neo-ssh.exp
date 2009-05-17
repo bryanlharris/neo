@@ -12,10 +12,12 @@ append sshargs { -o RSAAuthentication=no}
 append sshargs { -p 22}
 
 if {$cmd == 128} {
+    set sshdocmd 0
     set regex [lindex $argv 1]
     set ipaddr [exec neo search "$regex" | awk {{print $3}}]
     set pass [exec neo search showpasswords "$regex" | awk {{print $4}}]
 } elseif {$cmd == 192} {
+    set sshdocmd 0
     set ipaddr [lindex $argv 1]
     set pass [exec neo search showpasswords "$ipaddr " | awk {{print $4}}]
 }
