@@ -1,6 +1,15 @@
 #!/usr/bin/expect --
 
 set cmd [lindex $argv 0]
+set sshargs {-k -t -2 -4 -a -q -x -l root}
+append sshargs { -o StrictHostKeyChecking=no}
+append sshargs { -o Compression=no}
+append sshargs { -o CheckHostIP=no}
+append sshargs { -o PasswordAuthentication=yes}
+append sshargs { -o PubkeyAuthentication=yes}
+append sshargs { -o RhostsRSAAuthentication=no}
+append sshargs { -o RSAAuthentication=no}
+append sshargs { -p 22}
 
 if {$cmd == 128} {
     set regex [lindex $argv 1]
@@ -12,16 +21,6 @@ if {$cmd == 128} {
 }
 
 set timeout -1
-spawn ssh -k -t -2 -4 -a -q -x \
-    -l root \
-    -o StrictHostKeyChecking=no \
-    -o Compression=no \
-    -o CheckHostIP=no \
-    -o PasswordAuthentication=yes \
-    -o PubkeyAuthentication=no \
-    -o RhostsRSAAuthentication=no \
-    -o RSAAuthentication=no \
-    -p 22 $ipaddr
 match_max 100000
 expect -re "assword"
 send -- "$pass\r"
