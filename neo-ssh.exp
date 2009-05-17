@@ -20,6 +20,29 @@ if {$cmd == 128} {
     set sshdocmd 0
     set ipaddr [lindex $argv 1]
     set pass [exec neo search showpasswords "$ipaddr " | awk {{print $4}}]
+} elseif {$cmd == 224} {
+    set sshdocmd 1
+    set regex [lindex $argv 1]
+    set ipaddr [exec neo search "$regex" | awk {{print $3}}]
+    set pass [exec neo search showpasswords "$regex" | awk {{print $4}}]
+    set numargs [llength $argv]
+    set curarg 2
+    while {$curarg < $numargs} {
+        lappend sshremotecmd [lindex $argv $curarg]
+        incr curarg
+    }
+    set sshcmd [join $sshremotecmd " "]
+} elseif {$cmd == 240} {
+    set sshdocmd 1
+    set ipaddr [lindex $argv 1]
+    set pass [exec neo search showpasswords "$ipaddr " | awk {{print $4}}]
+    set numargs [llength $argv]
+    set curarg 2
+    while {$curarg < $numargs} {
+        lappend sshremotecmd [lindex $argv $curarg]
+        incr curarg
+    }
+    set sshcmd [join $sshremotecmd " "]
 }
 
 set timeout -1
