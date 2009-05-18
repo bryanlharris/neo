@@ -39,6 +39,7 @@ void handle_internal_command(int argc, char **argv, char **envp)
         { "help", cmd_help },
         { "usage", cmd_usage },
         { "mkpass", cmd_mkpass },
+        { "vncpass", cmd_vncpass },
         { "search", cmd_search },
         { "ssh", cmd_ssh },
         { "pix", cmd_pix },
@@ -81,6 +82,12 @@ int cmd_rdp(int argc, char **argv, char **envp)
 int cmd_version(int argc, char **argv, char **envp)
 {
     printf("neo version %s\n", NEO_VERSION);
+    return 0;
+}
+
+int cmd_vncpass()
+{
+    printf("r3m0t3h4x!\n");
     return 0;
 }
 
