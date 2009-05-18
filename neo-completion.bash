@@ -11,6 +11,10 @@ _neo()
             COMPREPLY=( $(compgen -W "${search_opts}" -- ${cur}) )
             return 0
             ;;
+        showpasswords)
+            COMPREPLY=( $(compgen -W "${showpasswords_opts}" -- ${cur}) )
+            return 0
+            ;;
         ssh)
             COMPREPLY=( $(compgen -W "${ssh_opts}" -- ${cur}) )
             return 0
