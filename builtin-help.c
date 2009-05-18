@@ -12,6 +12,7 @@ int list_common_cmds_help()
         "       rdp                                 Login to windows",
         "       pix                                 Login to cisco",
         "       mkpass                              Create random password (requires apg)",
+        "       vncpass                             Print out the current vnc password",
         "",
         "Notes",
         "       During an ssh session, you can type ctrl-x to put the remote session into the background.",
