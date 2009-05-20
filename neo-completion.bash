@@ -16,7 +16,7 @@ _neo()
             return 0
             ;;
         ssh)
-            COMPREPLY=( $(compgen -W "${ssh_opts}" -- ${cur}) )
+            COMPREPLY=( $(compgen -W "${ssh_opts} ${hostname_opts}" -- ${cur}) )
             return 0
             ;;
         rdp)
@@ -44,11 +44,12 @@ _ssh()
     local cur
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    COMPREPLY=( $(compgen -W "${default_opts}" -- ${cur}) )
+    COMPREPLY=( $(compgen -W "${default_opts} ${hostname_opts}" -- ${cur}) )
     return 0
 }
 
 export default_opts="$(neo search . | awk '{print tolower($1) ".*" tolower($2) ".*" $3}')"
+export hostname_opts="$(neo search . | awk '{print tolower($2) ".*" $3}')"
 export search_opts="showpasswords $default_opts"
 export ssh_opts="--ip $default_opts"
 export rdp_opts="$default_opts"
