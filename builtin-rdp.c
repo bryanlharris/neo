@@ -52,8 +52,8 @@ int cmd_rdp(int argc, char **argv, char **envp)
         return 1;
     }
 
-    execlp("neo-rdp.exp",
-           "neo-rdp.exp",
+    execlp("neo-rdp.tcl",
+           "neo-rdp.tcl",
            opt.ip ? "128" : "64",
            opt.ip ? ip : qry,
            args,

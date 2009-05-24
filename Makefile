@@ -1,7 +1,7 @@
 CFLAGS=-g -O3 -Wall
 CC=gcc
 
-SCRIPTS=neo-search.pl neo-pix.exp neo-ssh.exp neo-rdp.exp
+SCRIPTS=neo-search.pl neo-pix.exp neo-ssh.exp neo-rdp.tcl
 PROG=neo
 CONFIG=neoconfig
 
@@ -17,7 +17,8 @@ install: $(PROG)
 uninstall:
 	rm -fv /usr/local/bin/neo && \
 		rm -fv /usr/local/bin/neo{-help,-search}.pl && \
-		rm -fv /usr/local/bin/neo{-pix,-ssh,-rdp}.exp
+		rm -fv /usr/local/bin/neo{-pix,-ssh}.exp && \
+		rm -fv /usr/local/bin/neo{-rdp}.tcl
 
 LIBS= -I/usr/lib64/expect5.44.1.11 -Lexpect5.44.1.11 -ltcl -lm -lssl
 
