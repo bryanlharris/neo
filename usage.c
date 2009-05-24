@@ -67,18 +67,6 @@ int help_unknown_cmd(int argc, char **argv, char**envp)
     return 1;
 }
 
-int cmd_rdp(int argc, char **argv, char **envp)
-{
-    char *ip = argv[1];
-    if (check_ip(ip)) {
-        printf("not a valid ip\n");
-        return 1;
-    }
-
-    execlp("neo-rdp.pl", "neo-rdp.pl", ip, NULL);
-    return 0;
-}
-
 int cmd_version(int argc, char **argv, char **envp)
 {
     printf("neo version %s\n", NEO_VERSION);
