@@ -1,7 +1,7 @@
 CFLAGS=-g -O3 -Wall
 CC=gcc
 
-SCRIPTS=neo-search.pl neo-pix.exp neo-ssh.exp neo-rdp.pl
+SCRIPTS=neo-search.pl neo-pix.exp neo-ssh.exp neo-rdp.exp
 PROG=neo
 CONFIG=neoconfig
 
@@ -16,13 +16,13 @@ install: $(PROG)
 
 uninstall:
 	rm -fv /usr/local/bin/neo && \
-		rm -fv /usr/local/bin/neo{-help,-search,-rdp}.pl && \
-		rm -fv /usr/local/bin/neo{-pix,-ssh}.exp
+		rm -fv /usr/local/bin/neo{-help,-search}.pl && \
+		rm -fv /usr/local/bin/neo{-pix,-ssh,-rdp}.exp
 
 LIBS= -I/usr/lib64/expect5.44.1.11 -Lexpect5.44.1.11 -ltcl -lm -lssl
 
-neo: usage.o builtin-search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o builtin-help.o
-	$(CC) $(CFLAGS) -o neo usage.o builtin-search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o builtin-help.o $(LIBS)
+neo: usage.o builtin-rdp.o builtin-search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o builtin-help.o
+	$(CC) $(CFLAGS) -o neo usage.o builtin-rdp.o builtin-search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o builtin-help.o $(LIBS)
 
 check-ip.c: check-ip.re
 	re2c --case-insensitive check-ip.re > check-ip.c
