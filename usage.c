@@ -44,6 +44,7 @@ void handle_internal_command(int argc, char **argv, char **envp)
         { "ssh", cmd_ssh },
         { "pix", cmd_pix },
         { "rdp", cmd_rdp },
+        { "vnc", cmd_vnc },
         { "--help", cmd_help },
         { "--version", cmd_version },
         { "-h", cmd_help },
