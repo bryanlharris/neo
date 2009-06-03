@@ -53,7 +53,7 @@ if {$sshdocmd == 0} {
     send -- "$pass\r"
     expect -re "(#.* )|(Press Space or Return to end)"
     send -- "exec bash\r"
-    expect -re "# "
+    expect -re "#"
     send -- "export PS1='\\n\[\$USER\@\\e\[0;32m\$(echo \$HOSTNAME | cut -d. -f1)\\e\[0m:\$PWD\]\\n# '\r"
     expect -re "# "
     set CTRLX \030
