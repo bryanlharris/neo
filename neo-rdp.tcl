@@ -25,6 +25,6 @@ if {$cmd == 128} {
     }
     set argstr [join $rdpargs " "]
 }
-append argstr "-p \'$pass\'"
+append argstr "-p$pass"
 
 exec rdesktop {*}[split $argstr] $ipaddr &
