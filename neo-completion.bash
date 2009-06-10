@@ -35,5 +35,5 @@ _neo()
     return 0
 }
 
-export default_opts="$(neo search . | awk '{print tolower($2) ".*" $3}')"
+export default_opts="$(neo search . | awk '{print tolower($2) ".*" $3}') $(neo search . | awk '{print tolower($1) ".*" tolower($2)}')"
 complete -o default -F _neo neo
