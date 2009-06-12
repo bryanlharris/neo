@@ -8,7 +8,7 @@ set stars [string repeat "*" [string length $pass]]
 set timeout -1
 match_max 100000
 
-spawn ssh -k -t -2 -4 -a -q -x \
+spawn ssh -k -t -4 -a -q -x \
     -p 22 \
     -l $user \
     -o StrictHostKeyChecking=no \
