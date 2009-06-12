@@ -5,3 +5,6 @@
 [dco]
     user = 
     pass = 
+
+[ssh-agent]
+    passphrase = 
