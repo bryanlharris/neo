@@ -1,7 +1,7 @@
 CFLAGS=-g -O3 -Wall
 CC=gcc
 
-SCRIPTS=neo-search.pl neo-pix.exp neo-ssh.exp neo-rdp.tcl neo-vnc.tcl
+SCRIPTS=neo-search.pl neo-pix.exp neo-ssh.exp neo-rdp.tcl neo-vnc.tcl neo-record.sh neo-record.exp
 PROG=neo
 CONFIG=neoconfig
 
