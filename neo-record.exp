@@ -1,0 +1,19 @@
+#!/usr/bin/expect -- 
+
+set ticket [lindex $argv 0]
+
+if {[info exists ticket] && [regexp {[0-9]{6}} $ticket]} {
+    if {![file isdirectory /home/bharris/tickets/$ticket]} {
+        file mkdir /home/bharris/tickets/$ticket
+    }
+    cd /home/bharris/tickets/$ticket
+    spawn neo-record.sh $ticket
+} else {
+    cd /home/bharris/alerts
+    spawn neo-record.sh
+}
+expect "Enter passphrase for /home/bharris/.ssh/id_rsa: "
+send -- "1h2t3n\r"
+expect -exact "Identity added: /home/bharris/.ssh/id_rsa (/home/bharris/.ssh/id_rsa)\r"
+interact
+exit
