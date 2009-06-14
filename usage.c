@@ -45,6 +45,7 @@ void handle_internal_command(int argc, char **argv, char **envp)
         { "pix", cmd_pix },
         { "rdp", cmd_rdp },
         { "vnc", cmd_vnc },
+        { "record", cmd_record },
         { "--help", cmd_help },
         { "--version", cmd_version },
         { "-h", cmd_help },
@@ -101,5 +102,16 @@ int cmd_help(int argc, char **argv, char **envp)
 int cmd_mkpass(int argc, char **argv, char **envp)
 {
     execlp("apg","apg","-n","1","-m","10","-x","10","-a","1","-E","IilL10oO,.\\'\\\"-_\\!\\`\\;:\\|\\{\\}\\[]\\(\\)\\<\\>\\\\%\\$?\\&\\^\\@","-l",NULL);
+    return 0;
+}
+
+int cmd_record(int argc, char **argv, char **envp)
+{
+    if(!argv[0])
+        execlp("neo-record.exp", "neo-record.exp", NULL);
+    else {
+        char *tck = argv[0];
+        execlp("neo-record.exp", "neo-record.exp", tck, NULL);
+    }
     return 0;
 }

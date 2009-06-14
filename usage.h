@@ -15,6 +15,7 @@ extern int cmd_version(int argc, char **argv, char **envp);
 extern int cmd_help(int argc, char **argv, char **envp);
 extern int cmd_usage(int argc, char **argv, char **envp);
 extern int cmd_mkpass(int argc, char **argv, char **envp);
+extern int cmd_record(int argc, char **argv, char **envp);
 extern int cmd_search(int argc, char **argv, char **envp);
 extern int cmd_ssh(int argc, char **argv, char **envp);
 extern int cmd_pix(int argc, char **argv, char **envp);
