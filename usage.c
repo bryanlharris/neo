@@ -110,7 +110,7 @@ int cmd_record(int argc, char **argv, char **envp)
     if(!argv[0])
         execlp("neo-record.exp", "neo-record.exp", NULL);
     else {
-        char *tck = argv[0];
+        char *tck = argv[1];
         execlp("neo-record.exp", "neo-record.exp", tck, NULL);
     }
     return 0;
