@@ -20,7 +20,7 @@ uninstall:
 		rm -fv /usr/local/bin/neo{-pix,-ssh}.exp && \
 		rm -fv /usr/local/bin/neo{-rdp}.tcl
 
-LIBS= -I/usr/lib64/expect5.44.1.11 -Lexpect5.44.1.11 -ltcl -lm -lssl
+#LIBS= -I/usr/lib64/expect5.44.1.11 -Lexpect5.44.1.11 -ltcl -lm -lssl
 
 neo: usage.o builtin-vnc.o builtin-rdp.o builtin-search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o builtin-help.o
 	$(CC) $(CFLAGS) -o neo builtin-vnc.o usage.o builtin-rdp.o builtin-search.o builtin-ssh.o builtin-pix.o neo.o check-ip.o config.o builtin-help.o $(LIBS)
