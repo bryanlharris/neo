@@ -20,6 +20,9 @@ int cmd_rdp(int argc, char **argv, char **envp)
     char args[50] = "";
     int no_more_arg = 0;
 
+    printf("not allowed to use this\n");
+    return 1;
+
     memset(ip, 0, 16*sizeof(char));
     memset(&opt, 0, sizeof(opt));
     for (dst = src = &argv[1]; src < argc + argv; ) {
