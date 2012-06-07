@@ -16,31 +16,3 @@ Removal
 
     make uninstall ;# as root
 
-
-just saving a copy of this stuff
-#!/bin/bash
-
-unalias rm
-
-set -e
-
-cat /root/shadow > /root/.shadowBackupForPasswordReset
-chmod 400 /root/.shadowBackupForPasswordReset
-
-dialog --inputbox "What is the username?" 10 40 2> /root/.usernameForPasswordReset
-dialog --insecure --passwordbox "What is the password?" 10 40 2> /root/.plaintextPasswordForPasswordReset
-
-gawk 'BEGIN{FS=":";command="cat /root/.usernameForPasswordReset"; \
-  close(command,"to");command|&getline user;close(command); \
-  command="openssl passwd -1 -stdin -noverify </root/.plaintextPasswordForPasswordReset"; \
-  close(command, "to");command|&getline md5;close(command);pat="^"user":";}  \
-  $0 ~ pat {FS=":";printf("%s:%s:%s:%s:%s:%s:%s:%s:%s\n",$1,md5,$3,$4,$5,$6,$7,$8,$9)}' \
-  /root/shadow > /root/.lineFromShadowContainingNewPasswordHash
-
-sed -i 's/^'$( cat /root/.usernameForPasswordReset )':.*/'$(cat /root/.lineFromShadowContainingNewPasswordHash)'/' /root/shadow
-
-/bin/rm -f /root/.plaintextPasswordForPasswordReset
-/bin/rm -f /root/.lineFromShadowContainingNewPasswordHash
-/bin/rm -f /root/.shadowBackupForPasswordReset
-/bin/rm -f /root/.usernameForPasswordReset
-
