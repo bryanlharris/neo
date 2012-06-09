@@ -6,6 +6,13 @@
 #include "usage.h"
 #include "config.h"
 
+const char neo_usage_string[] =
+  "git [--version] [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n"
+  "           [-p|--paginate|--no-pager] [--no-replace-objects] [--bare]\n"
+  "           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n"
+  "           [-c name=value] [--help]\n"
+  "           <command> [<args>]";
+
 int main(int argc, char **argv, char **envp)
 {
     char *cmd = argv[0] ? argv[0] : "neo-help";
