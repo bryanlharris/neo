@@ -16,3 +16,4 @@ Removal
 
     make uninstall ;# as root
 
+test
