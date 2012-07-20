@@ -1,6 +1,6 @@
 About
 
-A hobby to do a CLI like nerd/s.  Type neo help for usage.
+A hobby to help with work logins at NeoSpire.  Type neo help for usage.
 
 Installation (to /usr/local/bin)
 
@@ -15,5 +15,3 @@ Set your password
 Removal
 
     make uninstall ;# as root
-
-test
